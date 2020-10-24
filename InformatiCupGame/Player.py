@@ -38,6 +38,9 @@ class Player:
     def get_id(self):
         return self.id
 
+    def get_direction(self):
+        return self.direction
+
     # fuction to turn the player left depending on previous direction
     def turn_left(self):
         if self.direction == "up":
