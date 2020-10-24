@@ -6,14 +6,16 @@ class Player:
         self.id = player_id
         self.x = x
         self.y = y
-        self.speed = 0
+        self.speed = 1
         self.name = name
         self. direction = direction
         self.active = True
 
+    def print_player(self):
+        print("ID:" + str(self.id) + " x:" + str(self.x) + " y:" + str(self.y) + " speed:" + str(self.speed) + " direction:" + self.direction + " active:" + str(self.active))
     #function to return current x and y position
     def get_position(self):
-        return {self.x, self.y}
+        return self.x, self.y
 
     def get_speed(self):
         return self.speed
