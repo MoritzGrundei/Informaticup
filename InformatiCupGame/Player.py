@@ -22,9 +22,13 @@ class Player:
 
     def speed_up(self):
         self.speed = self.speed + 1
+        if self.speed > 10:
+            self.deactivate()
 
     def slow_down(self):
         self.speed = self.speed - 1
+        if self.speed < 0:
+            self.deactivate()
 
     # function in case the player changes nothing
     def change_nothing(self):
@@ -90,3 +94,15 @@ class Player:
         new_pos = {self.x, self.y}
 
         return new_pos
+
+    def process_command(self, command):
+        if command == "change_nothing":
+            self.change_nothing()
+        elif command == "speed_up":
+            self.speed_up()
+        elif command == "slow_down":
+            self.slow_down()
+        elif command == "turn_left":
+            self.turn_left()
+        else:
+            self.turn_right()
