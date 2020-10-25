@@ -1,4 +1,4 @@
-from InformatiCupGame.Player import Player
+from Player import Player
 from random import randrange
 from random import choice
 
