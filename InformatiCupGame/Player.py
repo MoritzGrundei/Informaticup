@@ -1,8 +1,9 @@
 # Player class
 class Player:
 
-    # setting up of variables
-    def __inti__(self, player_id, x, y, name, direction):
+    # setting up variables
+    # Moritz: fixed typo: __inti__ -> __init__
+    def __init__(self, player_id, x, y, name, direction):
         self.id = player_id
         self.x = x
         self.y = y
@@ -95,9 +96,10 @@ class Player:
 
         return new_pos
 
+    # Moritz: if input invalid, turn right??? --> changed to change_nothing
     def process_command(self, command):
-        if command == "change_nothing":
-            self.change_nothing()
+        if command == "turn_right":
+            self.turn_right()
         elif command == "speed_up":
             self.speed_up()
         elif command == "slow_down":
@@ -105,4 +107,4 @@ class Player:
         elif command == "turn_left":
             self.turn_left()
         else:
-            self.turn_right()
+            self.change_nothing()

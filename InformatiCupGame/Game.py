@@ -14,6 +14,7 @@ class Game:
         self.counter = 0
         self.players = []
         directions = ["left", "right", "up", "down"]
+        # initialize every player's starting position and id
         for i in range(1):
             player_id = i + 1
             x = randrange(width - 1)
@@ -21,8 +22,8 @@ class Game:
             self.board[y][x] = player_id
             name = "Player:" + str(id)
             direction = choice(directions)
-            player = Player()
-            player.__inti__(player_id, x, y, name, direction)
+            # Moritz: fixed typo in Player
+            player = Player(player_id, x, y, name, direction)
             self.players.append(player)
 
     # checks if more than one player is still active
@@ -140,7 +141,7 @@ class Game:
     # collect the inputs for every player
     def collect_inputs(self):
         for player in self.players:
-            command = input("give command")
+            command = input("give command: ")
             print(command)
             player.process_command(command)
 
