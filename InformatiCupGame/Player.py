@@ -2,7 +2,6 @@
 class Player:
 
     # setting up variables
-    # Moritz: fixed typo: __inti__ -> __init__
     def __init__(self, player_id, x, y, name, direction):
         self.id = player_id
         self.x = x
@@ -96,7 +95,6 @@ class Player:
 
         return new_pos
 
-    # Moritz: if input invalid, turn right??? --> changed to change_nothing
     def process_command(self, command):
         if command == "turn_right":
             self.turn_right()

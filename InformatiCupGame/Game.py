@@ -15,51 +15,54 @@ class Game:
         self.players = []
         directions = ["left", "right", "up", "down"]
         # initialize every player's starting position and id
-        for i in range(1):
+        for i in range(2):
             player_id = i + 1
-            x = randrange(width - 1)
-            y = randrange(height - 1)
+            x = randrange(1, width - 2)
+            y = randrange(1, height - 2)
             self.board[y][x] = player_id
             name = "Player:" + str(id)
             direction = choice(directions)
-            # Moritz: fixed typo in Player
             player = Player(player_id, x, y, name, direction)
             self.players.append(player)
 
     # checks if more than one player is still active
     def check_running(self):
         counter = 0
+        winner = 0
         for player in self.players:
             if player.get_active():
                 counter = counter + 1
-        if counter >= 1:
+                winner = player.get_id()
+        if counter > 1:
             self.running = True
         else:
             self.running = False
+            print("Winner: " + str(winner))
 
     # defines what happens for every tick of the game
     def tick(self):
         self.check_running()
         self.counter = self.counter + 1
-        self.collect_inputs()
-        for player in self.players:
-            old_x, old_y = player.get_position()
-            player.move()
-            new_x, new_y = player.get_position()
-            if player.get_direction() == "right":  # player moves right
-                self.move_player_right(old_x, new_x, old_y, new_y, player)
+        if self.running:
+            self.collect_inputs()
+            for player in self.players:
+                old_x, old_y = player.get_position()
+                player.move()
+                new_x, new_y = player.get_position()
+                if player.get_direction() == "right":  # player moves right
+                    self.move_player_right(old_x, new_x, old_y, new_y, player)
 
-            elif player.get_direction() == "left":  # player moves left
-                self.move_player_left(old_x, new_x, old_y, new_y, player)
+                elif player.get_direction() == "left":  # player moves left
+                    self.move_player_left(old_x, new_x, old_y, new_y, player)
 
-            elif player.get_direction() == "up":  # player moves upwards
-                self.move_player_up(old_x, new_x, old_y, new_y, player)
+                elif player.get_direction() == "up":  # player moves upwards
+                    self.move_player_up(old_x, new_x, old_y, new_y, player)
 
-            elif player.get_direction() == "down":  # player moves downwards
-                self.move_player_down(old_x, new_x, old_y, new_y, player)
+                elif player.get_direction() == "down":  # player moves downwards
+                    self.move_player_down(old_x, new_x, old_y, new_y, player)
 
-            else:  # invalid player direction
-                player.deactivate()
+                else:  # invalid player direction
+                    player.deactivate()
 
     # move player left
     def move_player_left(self, old_x, new_x, old_y, new_y, player):
@@ -141,7 +144,7 @@ class Game:
     # collect the inputs for every player
     def collect_inputs(self):
         for player in self.players:
-            command = input("give command: ")
+            command = input("give command to player " + str(player.get_id()) + ": ")
             print(command)
             player.process_command(command)
 
