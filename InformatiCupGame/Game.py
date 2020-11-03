@@ -1,3 +1,6 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
 from Player import Player
 from random import randrange
 from random import choice
@@ -15,7 +18,7 @@ class Game:
         self.players = []
         directions = ["left", "right", "up", "down"]
         # initialize every player's starting position and id
-        for i in range(2):
+        for i in range(6):
             player_id = i + 1
             x = randrange(1, width - 2)
             y = randrange(1, height - 2)
@@ -161,3 +164,8 @@ class Game:
             player.print_player()
         for i in range(self.height):
             print(self.board[i])
+
+    def plot_field(self):
+        plt.imshow(self.board)
+        plt.colorbar()
+        plt.show()
