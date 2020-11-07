@@ -4,12 +4,18 @@ import matplotlib.pyplot as plt
 from Player import Player
 from random import randrange
 from random import choice
+import logging
+import os
 
 
 # class representing the playing board and the game logic
 class Game:
 
-    def __init__(self, height, width):
+    def __init__(self, height, width, logging_id):
+        # set up logging, use unique logging_id as Game identifier
+        self.logging_id = logging_id
+        mkdir_p(os.path.dirname('logs/' + str(logging_id) + '/Game.log'))
+        logging.basicConfig(filename='logs/' + str(logging_id) + '/Game.log', level=logging.DEBUG)
         self.width = width
         self.height = height
         self.board = [[0 for x in range(width)] for y in range(height)]
@@ -25,7 +31,7 @@ class Game:
             self.board[y][x] = player_id
             name = "Player:" + str(id)
             direction = choice(directions)
-            player = Player(player_id, x, y, name, direction)
+            player = Player(player_id, x, y, name, direction, logging_id)
             self.players.append(player)
 
     # checks if more than one player is still active
@@ -41,6 +47,7 @@ class Game:
         else:
             self.running = False
             print("Winner: " + str(winner))
+            logging.info("Winner: " + str(winner))
 
     # defines what happens for every tick of the game
     def tick(self):
@@ -160,12 +167,26 @@ class Game:
     # print out all the metrics of the game
     def print_game_state(self):
         print(self.counter)
+        logging.info(self.counter)
         for player in self.players:
             player.print_player()
         for i in range(self.height):
             print(self.board[i])
+            logging.info(self.board[i])
 
     def plot_field(self):
         plt.imshow(self.board)
         plt.colorbar()
-        plt.show()
+        plt.savefig('logs/' +  str(self.logging_id) + '/result' + '.png')
+
+# create logging dir
+def mkdir_p(path):
+    try:
+        os.makedirs(path, exist_ok=True)
+    except TypeError:
+        try:
+            os.makedirs(path)
+        except OSError as exc:
+            if exc.errno == errno.EEXIST and os.path.isdir(path):
+                pass
+            else: raise

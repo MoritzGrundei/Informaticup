@@ -1,8 +1,12 @@
+import logging
+
 # Player class
 class Player:
 
     # setting up variables
-    def __init__(self, player_id, x, y, name, direction):
+    def __init__(self, player_id, x, y, name, direction, logging_id):
+        # set up logging, use unique logging_id as Game identifier
+        logging.basicConfig(filename='logs/' + str(logging_id) + '/Game.log', level=logging.DEBUG)
         self.id = player_id
         self.x = x
         self.y = y
@@ -13,6 +17,7 @@ class Player:
 
     def print_player(self):
         print("ID:" + str(self.id) + " x:" + str(self.x) + " y:" + str(self.y) + " speed:" + str(self.speed) + " direction:" + self.direction + " active:" + str(self.active))
+        logging.info("ID:" + str(self.id) + " x:" + str(self.x) + " y:" + str(self.y) + " speed:" + str(self.speed) + " direction:" + self.direction + " active:" + str(self.active))
     #function to return current x and y position
     def get_position(self):
         return self.x, self.y
