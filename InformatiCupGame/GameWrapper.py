@@ -1,5 +1,4 @@
-from Game import Game
-from PlayerInterface import PlayerInterface
+from .Game import Game
 import time
 
 # wrapper class that is supposed to serve as an "interface" to other applications
@@ -16,14 +15,13 @@ class GameWrapper:
         while self.game.running:
             counter = 1
             inputs = []
+            print(self.get_game_state(1))
             for player in self.players:
                 inputs.append(player.get_command(self.game.return_game_state(counter)))
                 counter = counter + 1
-                print(player.get_player_game_state())
             self.game.tick(inputs)
         self.game.plot_field()
 
     def get_game_state(self, id):
         return self.game.return_game_state(id)
 
-GameWrapper()

@@ -1,1 +1,2 @@
-from ..InformatiCupGame import GameWrapper
+from .. import InformatiCupGame
+from .TestPlayer import TestPlayer
