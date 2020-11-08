@@ -2,7 +2,9 @@ from Game import Game
 from PlayerInterface import PlayerInterface
 import time
 
+# wrapper class that is supposed to serve as an "interface" to other applications
 class GameWrapper:
+    # constructor expects width, height and a set of players that inherit methods from PlayerInterface
     def __init__(self, width, height, players):
         self.game = Game(width, height, len(players), time.time())
         self.players = players

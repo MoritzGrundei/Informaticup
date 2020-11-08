@@ -176,6 +176,7 @@ class Game:
             print(self.board[i])
             logging.info(self.board[i])
 
+    # returns game state in json-like (dictionary) format that is supposed to mimic the real games report file
     def return_game_state(self, id):
         state_json = json.dumps(
             {'width': self.width,
@@ -188,6 +189,7 @@ class Game:
         )
         return state_json
 
+    # returns a json-like (dictionary) player representation
     def get_players_dict(self):
         players_dict = {}
         for player in self.players:
@@ -205,7 +207,7 @@ class Game:
         plt.colorbar()
         plt.savefig('logs/' +  str(self.logging_id) + '/result' + '.png')
 
-# create logging dir
+# create logging dir -> move to utils?
 def mkdir_p(path):
     try:
         os.makedirs(path, exist_ok=True)

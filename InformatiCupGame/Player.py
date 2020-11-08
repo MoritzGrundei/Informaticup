@@ -1,6 +1,6 @@
 import logging
 
-# Player class
+# Player class that serves as a direct representation of Player in the Game. Be aware that this is NOT the agent
 class Player:
 
     # setting up variables
