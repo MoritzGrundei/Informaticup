@@ -13,7 +13,7 @@ from random import choice
 # class representing the playing board and the game logic
 class Game:
 
-    def __init__(self, height, width, logging_id):
+    def __init__(self, height, width, player_count, logging_id):
         # set up logging, use unique logging_id as Game identifier
         self.logging_id = logging_id
         mkdir_p(os.path.dirname('logs/' + str(logging_id) + '/Game.log'))
@@ -26,7 +26,7 @@ class Game:
         self.players = []
         directions = ["left", "right", "up", "down"]
         # initialize every player's starting position and id
-        for i in range(6):
+        for i in range(player_count):
             player_id = i + 1
             x = randrange(1, width - 2)
             y = randrange(1, height - 2)
