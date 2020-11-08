@@ -178,17 +178,17 @@ class Game:
 
     def return_game_state(self, id):
         state_json = json.dumps(
-            {'width' : self.width,
-             'height' : self.height,
-             'cells' : self.board,
-             'players' : self.players_dict(),
-             'you' : id,
-             'running' : self.players[id - 1].get_active()
+            {'width': self.width,
+             'height': self.height,
+             'cells': self.board,
+             'players': self.get_players_dict(),
+             'you': id,
+             'running': self.players[id - 1].get_active()
              }
         )
         return state_json
 
-    def players_dict(self):
+    def get_players_dict(self):
         players_dict = {}
         for player in self.players:
             players_dict[player.get_id()] = {
