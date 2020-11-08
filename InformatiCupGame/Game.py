@@ -15,7 +15,7 @@ class Game:
         # set up logging, use unique logging_id as Game identifier
         self.logging_id = logging_id
         mkdir_p(os.path.dirname('logs/' + str(logging_id) + '/Game.log'))
-        logging.basicConfig(filename='logs/' + str(logging_id) + '/Game.log', level=logging.DEBUG)
+        logging.basicConfig(filename='logs/' + str(logging_id) + '/Game.log', level=logging.INFO)
         self.width = width
         self.height = height
         self.board = [[0 for x in range(width)] for y in range(height)]
@@ -50,11 +50,11 @@ class Game:
             logging.info("Winner: " + str(winner))
 
     # defines what happens for every tick of the game
-    def tick(self):
+    def tick(self, inputs):
         self.check_running()
         self.counter = self.counter + 1
         if self.running:
-            self.collect_inputs()
+            self.collect_inputs(inputs)
             for player in self.players:
                 old_x, old_y = player.get_position()
                 player.move()
@@ -152,9 +152,9 @@ class Game:
             player.deactivate()
 
     # collect the inputs for every player
-    def collect_inputs(self):
+    def collect_inputs(self, inputs):
         for player in self.players:
-            command = input("give command to player " + str(player.get_id()) + ": ")
+            command = inputs[player.get_id()-1]
             print(command)
             player.process_command(command)
 

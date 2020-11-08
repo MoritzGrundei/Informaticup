@@ -6,7 +6,7 @@ class Player:
     # setting up variables
     def __init__(self, player_id, x, y, name, direction, logging_id):
         # set up logging, use unique logging_id as Game identifier
-        logging.basicConfig(filename='logs/' + str(logging_id) + '/Game.log', level=logging.DEBUG)
+        logging.basicConfig(filename='logs/' + str(logging_id) + '/Game.log', level=logging.INFO)
         self.id = player_id
         self.x = x
         self.y = y
