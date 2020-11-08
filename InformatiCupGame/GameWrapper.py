@@ -3,11 +3,11 @@ from PlayerTest import PlayerTest
 import time
 
 class GameWrapper:
-    def __init__(self):
+    def __init__(self, width, height, players):
         self.player_count = 6
-        self.game = Game(10, 10, self.player_count, time.time())
-        self.players = []
-        for i in range(self.player_count):
+        self.game = Game(width, height, len(players), time.time())
+        self.players = players
+        for i in range(len(players)):
             player = PlayerTest(i+1, self)
             self.players.append(player)
         self.run()
