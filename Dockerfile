@@ -1,5 +1,4 @@
 FROM python
-COPY InformatiCupGame /InformatiCupGame
-WORKDIR InformatiCupGame
-RUN pip install -r requirements.txt
-CMD ["python","main.py"]
+COPY Source /Source
+RUN pip install -r Source/requirements.txt
+CMD ["python", "-m", "Source.Main.Main.py"]
