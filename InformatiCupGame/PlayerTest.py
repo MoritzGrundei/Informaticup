@@ -2,7 +2,6 @@
 
 class PlayerTest:
     def __init__(self):
-        print('Player created')
-
+        a=0
     def get_command(self):
         return 'turn_right'

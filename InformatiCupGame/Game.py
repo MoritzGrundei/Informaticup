@@ -1,11 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import logging
+import os
+import json
 
 from Player import Player
 from random import randrange
 from random import choice
-import logging
-import os
+
 
 
 # class representing the playing board and the game logic
@@ -173,6 +175,30 @@ class Game:
         for i in range(self.height):
             print(self.board[i])
             logging.info(self.board[i])
+
+    def return_game_state(self, id):
+        state_json = json.dumps(
+            {'width' : self.width,
+             'height' : self.height,
+             'cells' : self.board,
+             'players' : self.players_dict(),
+             'you' : id,
+             'running' : self.players[id - 1].get_active()
+             }
+        )
+        return state_json
+
+    def players_dict(self):
+        players_dict = {}
+        for player in self.players:
+            players_dict[player.get_id()] = {
+                'x': player.get_position()[0],
+                'y': player.get_position()[1],
+                'direction': player.get_direction(),
+                'speed': player.get_speed(),
+                'active': player.get_active()
+              }
+        return players_dict
 
     def plot_field(self):
         plt.imshow(self.board)

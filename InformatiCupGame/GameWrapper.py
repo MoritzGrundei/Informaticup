@@ -16,10 +16,10 @@ class GameWrapper:
         print(self.game.running)
         while self.game.running:
             inputs = []
+            print(self.game.return_game_state(1))
             for player in self.players:
                 inputs.append(player.get_command())
             self.game.tick(inputs)
-            self.game.print_game_state()
         self.game.plot_field()
 
 GameWrapper()
