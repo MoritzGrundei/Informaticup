@@ -1,0 +1,1 @@
+from ..InformatiCupGame import GameWrapper
