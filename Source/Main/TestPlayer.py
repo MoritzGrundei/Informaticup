@@ -8,5 +8,5 @@ class TestPlayer(PlayerInterface):
 
     def get_command(self, game_state):
         #calculate new command
-        self.set_command('turn_left')
+        self.set_command('change_nothing')
         return self.command
