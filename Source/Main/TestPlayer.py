@@ -1,4 +1,4 @@
-from InformatiCupGame import PlayerInterface
+from Source.InformatiCupGame.PlayerInterface import PlayerInterface
 
 
 class TestPlayer(PlayerInterface):

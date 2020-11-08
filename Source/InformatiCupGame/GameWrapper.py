@@ -1,4 +1,4 @@
-from .Game import Game
+from Source.InformatiCupGame.Game import Game
 import time
 
 # wrapper class that is supposed to serve as an "interface" to other applications
