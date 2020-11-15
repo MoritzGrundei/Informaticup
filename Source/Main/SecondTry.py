@@ -5,7 +5,7 @@ import numpy as np
 from Source.InformatiCupGame.PlayerInterface import PlayerInterface
 
 
-class PassivePlayer(PlayerInterface):
+class SecondTry(PlayerInterface):
 
     def set_command(self, new_command):
         self.command = new_command
@@ -29,6 +29,7 @@ class PassivePlayer(PlayerInterface):
 
         delta_position_change_nothing = self.get_position_delta(translated_direction, current_speed)
         if self.check_if_valid(current_position, delta_position_change_nothing):
+            new_position = (current_position[0] + delta_position_change_nothing[0], current_position[1] + delta_position_change_nothing[1])
             valid_actions += ["change_nothing"]
         if current_speed < 10:
             delta_position_speed_up = self.get_position_delta(translated_direction, current_speed, 1)
@@ -47,6 +48,8 @@ class PassivePlayer(PlayerInterface):
         if self.check_if_valid(current_position, delta_position_turn_right):
             valid_actions += ["turn_right"]
 
+        distances = self.get_distance_to_players()
+        print(self.get_avg_speed())
         try:
             action = random.choice(valid_actions)
         except IndexError:
@@ -94,13 +97,47 @@ class PassivePlayer(PlayerInterface):
 
         return True
 
-    def get_distance_to_player(self):
-        distances = []
+    def get_distance_to_players(self):
+        distances = [0, 0, 0, 0, 0, 0]
         current_position = (self.own_player["x"], self.own_player["y"])
-        for i in range(6):
-            if i + 1 == self.state["you"]:
-                distances[i] = 0
-            else:
-                enemy_position = self.state["players"][i + 1]
+        if self.state["players"][str(self.state["you"])]["active"]:
+            for i in range(6):
+                    if i + 1 == self.state["you"]:
+                        distances[i] = 0
+                    else:
+                        if self.state["players"][str(i + 1)]["active"]:
+                            enemy_position = (self.state["players"][str(i + 1)]["x"], self.state["players"][str(i + 1)]["y"])
+                            distance = np.sqrt(np.power(current_position[0] - enemy_position[0], 2) + np.power(current_position[1] - enemy_position[1], 2))
+                            distances[i] = distance
+                        else:
+                            distances[i] = 0
+        return distances
+
+    def get_free_spaces(self, new_position):
+        number_of_free_spaces = 0
+        for i in range(-4, 5):
+            for j in range(-4, 5):
+                try:
+                    if self.state["cells"][new_position[1] + i][new_position[0] + j] == 0:
+                        number_of_free_spaces += 1
+                except IndexError:
+                    pass
+
+        return number_of_free_spaces
 
 
+    def get_avg_speed(self):
+        sum = 0.0
+        counter = 0.0
+        avg = 0.0
+        if self.state["players"][str(self.state["you"])]["active"]:
+            for i in range(6):
+                if i + 1 == self.state["you"]:
+                    pass
+                else:
+                    if self.state["players"][str(i + 1)]["active"]:
+                        sum += self.state["players"][str(i + 1)]["speed"]
+                        counter += 1
+            if counter > 0:
+                avg = sum/counter
+        return avg
