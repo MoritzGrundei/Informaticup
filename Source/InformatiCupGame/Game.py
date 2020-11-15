@@ -165,7 +165,6 @@ class Game:
     def collect_inputs(self, inputs):
         for player in self.players:
             command = inputs[player.get_id()-1]
-            print(command)
             player.process_command(command)
 
     def check_pos_in_field(self, x, y):

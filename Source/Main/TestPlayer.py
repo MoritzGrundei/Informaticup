@@ -12,6 +12,8 @@ class TestPlayer(PlayerInterface):
     def get_command(self, game_state):
         state = json.loads(game_state)
         own_player = state["players"][str(state["you"])]
+        current_direction = own_player["direction"]
+        print(state["cells"][0][0])
         valid_actions = ["turn_left", "turn_right", "change_nothing"]
         if own_player["speed"] < 10:
             valid_actions += ["speed_up"]

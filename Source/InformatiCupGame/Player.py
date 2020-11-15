@@ -107,5 +107,7 @@ class Player:
             self.slow_down()
         elif command == "turn_left":
             self.turn_left()
-        else:
+        elif command == "change_nothing":
             self.change_nothing()
+        else:
+            self.deactivate()
