@@ -7,6 +7,7 @@ class GameWrapper:
     def __init__(self, width, height, players):
         self.game = Game(width, height, len(players), time.time())
         self.players = players
+        self.winner = 0
         self.run()
 
     def run(self):
@@ -16,12 +17,18 @@ class GameWrapper:
             counter = 1
             inputs = []
             print(self.get_game_state(1))
+            self.game.log_game_state()
             for player in self.players:
                 inputs.append(player.get_command(self.game.return_game_state(counter)))
                 counter = counter + 1
             self.game.tick(inputs)
         self.game.plot_field()
 
+        self.winner = self.game.get_winner()
+
     def get_game_state(self, id):
         return self.game.return_game_state(id)
+
+    def get_winner(self):
+        return self.winner
 

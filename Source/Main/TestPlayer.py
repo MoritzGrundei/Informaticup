@@ -1,3 +1,6 @@
+import json
+import random
+
 from Source.InformatiCupGame.PlayerInterface import PlayerInterface
 
 
@@ -7,6 +10,13 @@ class TestPlayer(PlayerInterface):
         self.command = new_command
 
     def get_command(self, game_state):
-        #calculate new command
-        self.set_command('turn_left')
+        state = json.loads(game_state)
+        own_player = state["players"][str(state["you"])]
+        valid_actions = ["turn_left", "turn_right", "change_nothing"]
+        if own_player["speed"] < 10:
+            valid_actions += ["speed_up"]
+        if own_player["speed"] > 1:
+            valid_actions += ["slow_down"]
+        action = random.choice(valid_actions)
+        self.set_command(action)
         return self.command

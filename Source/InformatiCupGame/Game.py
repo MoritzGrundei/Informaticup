@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import logging
 import os
 import json
@@ -6,6 +7,7 @@ import json
 from Source.InformatiCupGame.Player import Player
 from random import randrange
 from random import choice
+import logreset
 
 
 
@@ -14,9 +16,12 @@ class Game:
 
     def __init__(self, height, width, player_count, logging_id):
         # set up logging, use unique logging_id as Game identifier
+        logreset.reset_logging()
         self.logging_id = logging_id
-        mkdir_p(os.path.dirname('logs/' + str(logging_id) + '/Game.log'))
-        logging.basicConfig(filename='logs/' + str(logging_id) + '/Game.log', level=logging.INFO)
+        mkdir_p(os.path.dirname('logs/' + str(self.logging_id) + '/Game.log'))
+        logging.basicConfig(filename='logs/' + str(self.logging_id) + '/Game.log', level=logging.INFO)
+        self.logger = logging.getLogger()
+        self.winner = 0
         self.width = width
         self.height = height
         self.board = [[0 for x in range(width)] for y in range(height)]
@@ -35,20 +40,24 @@ class Game:
             player = Player(player_id, x, y, name, direction, logging_id)
             self.players.append(player)
 
+
+    def get_winner(self):
+        return self.winner
     # checks if more than one player is still active
     def check_running(self):
         counter = 0
-        winner = 0
         for player in self.players:
             if player.get_active():
                 counter = counter + 1
-                winner = player.get_id()
+                self.winner = player.get_id()
         if counter > 1:
             self.running = True
         else:
             self.running = False
-            print("Winner: " + str(winner))
-            logging.info("Winner: " + str(winner))
+            print("Winner: " + str(self.winner))
+            self.logger.info("Winner: " + str(self.winner))
+
+
 
     # defines what happens for every tick of the game
     def tick(self, inputs):
@@ -166,14 +175,12 @@ class Game:
             return False
 
     # print out all the metrics of the game
-    def print_game_state(self):
-        print(self.counter)
-        logging.info(self.counter)
+    def log_game_state(self):
+        self.logger.info(self.counter)
         for player in self.players:
-            player.print_player()
+            player.log_player(self.logger)
         for i in range(self.height):
-            print(self.board[i])
-            logging.info(self.board[i])
+            self.logger.info(self.board[i])
 
     # returns game state in json-like (dictionary) format that is supposed to mimic the real games report file
     def return_game_state(self, id):
@@ -202,9 +209,14 @@ class Game:
         return players_dict
 
     def plot_field(self):
-        plt.imshow(self.board)
-        plt.colorbar()
-        plt.savefig('logs/' +  str(self.logging_id) + '/result' + '.png')
+
+        bounds = [0, 0, 1, 2, 3, 4, 5, 6]
+        cmap = mpl.colors.ListedColormap(['white', 'red', 'green', 'blue', 'brown', 'orange', 'cyan'])
+        norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
+        plt.colorbar(mpl.cm.ScalarMappable(cmap=cmap, norm=norm), ticks=bounds)
+        plt.imshow(self.board, cmap=cmap)
+        plt.savefig('logs/' + str(self.logging_id) + '/result' + '.png')
+        plt.close()
 
 # create logging dir -> move to utils?
 def mkdir_p(path):
