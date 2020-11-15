@@ -217,6 +217,9 @@ class Game:
         plt.savefig('logs/' + str(self.logging_id) + '/result' + '.png')
         plt.close()
 
+    def get_counter(self):
+        return self.counter
+
 # create logging dir -> move to utils?
 def mkdir_p(path):
     try:

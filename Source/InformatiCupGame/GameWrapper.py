@@ -32,3 +32,6 @@ class GameWrapper:
     def get_winner(self):
         return self.winner
 
+    def get_round_counter(self):
+        return self.game.get_counter()
+

@@ -5,7 +5,7 @@ import numpy as np
 from Source.InformatiCupGame.PlayerInterface import PlayerInterface
 
 
-class SecondTry(PlayerInterface):
+class HeuristicPlayer(PlayerInterface):
 
     def set_command(self, new_command):
         self.command = new_command
@@ -26,30 +26,42 @@ class SecondTry(PlayerInterface):
 
         # define all valid actions
         valid_actions = []
+        scores = []
 
         delta_position_change_nothing = self.get_position_delta(translated_direction, current_speed)
         if self.check_if_valid(current_position, delta_position_change_nothing):
-            new_position = (current_position[0] + delta_position_change_nothing[0], current_position[1] + delta_position_change_nothing[1])
+            new_position_change_nothing = (current_position[0] + delta_position_change_nothing[0], current_position[1] + delta_position_change_nothing[1])
+            scores += [self.get_score(new_position_change_nothing)]
             valid_actions += ["change_nothing"]
         if current_speed < 10:
             delta_position_speed_up = self.get_position_delta(translated_direction, current_speed, 1)
             if self.check_if_valid(current_position, delta_position_speed_up):
+                new_position_speed_up = (current_position[0] + delta_position_speed_up[0], current_position[1] + delta_position_speed_up[1])
+                scores += [self.get_score(new_position_speed_up)]
                 valid_actions += ["speed_up"]
         if current_speed > 1:
             delta_position_slow_down = self.get_position_delta(translated_direction, current_speed, -1)
             if self.check_if_valid(current_position, delta_position_slow_down):
+                new_position_slow_down = (current_position[0] + delta_position_slow_down[0], current_position[1] + delta_position_slow_down[1])
+                scores += [self.get_score(new_position_slow_down)]
                 valid_actions += ["slow_down"]
 
         delta_position_turn_left = self.get_position_delta((translated_direction + 1) % 4, current_speed)
         if self.check_if_valid(current_position, delta_position_turn_left):
+            new_position_turn_left = (current_position[0] + delta_position_turn_left[0], current_position[1] + delta_position_turn_left[1])
+            scores += [self.get_score(new_position_turn_left)]
             valid_actions += ["turn_left"]
 
         delta_position_turn_right = self.get_position_delta((translated_direction - 1) % 4, current_speed)
         if self.check_if_valid(current_position, delta_position_turn_right):
+            new_position_turn_right = (current_position[0] + delta_position_turn_right[0], current_position[1] + delta_position_turn_right[1])
+            scores += [self.get_score(new_position_turn_right)]
             valid_actions += ["turn_right"]
 
-        distances = self.get_distance_to_players()
-        print(self.get_avg_speed())
+        if len(scores) > 0:
+            action = valid_actions[scores.index(max(scores))]
+            print(action, max(scores))
+
         try:
             action = random.choice(valid_actions)
         except IndexError:
@@ -111,7 +123,23 @@ class SecondTry(PlayerInterface):
                             distances[i] = distance
                         else:
                             distances[i] = 0
+        max_distance = np.sqrt(np.power(self.state["width"], 2) + np.power(self.state["height"], 2))
+        for i in range(len(distances)):
+            distances[i] = distances[i]/max_distance
         return distances
+
+    def get_average_distance(self, distances):
+        sum = counter = 0.0
+        for i in range(len(distances)):
+            if distances[i] == 0:
+                pass
+            else:
+                sum += distances[i]
+                counter += 1
+        if counter == 0:
+            return 0
+        else:
+            return sum/counter
 
     def get_free_spaces(self, new_position):
         number_of_free_spaces = 0
@@ -122,8 +150,8 @@ class SecondTry(PlayerInterface):
                         number_of_free_spaces += 1
                 except IndexError:
                     pass
-
-        return number_of_free_spaces
+        normalised_num = number_of_free_spaces / 81.0
+        return normalised_num
 
 
     def get_avg_speed(self):
@@ -140,4 +168,8 @@ class SecondTry(PlayerInterface):
                         counter += 1
             if counter > 0:
                 avg = sum/counter
-        return avg
+        norm_avg = avg / 10
+        return norm_avg
+
+    def get_score(self, new_position):
+        return self.get_avg_speed() + self.get_average_distance(self.get_distance_to_players()) + self.get_free_spaces(new_position)

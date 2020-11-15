@@ -4,7 +4,7 @@ import random
 from Source.InformatiCupGame.PlayerInterface import PlayerInterface
 
 
-class TestPlayer(PlayerInterface):
+class RandomPlayer(PlayerInterface):
 
     def set_command(self, new_command):
         self.command = new_command
