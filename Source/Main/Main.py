@@ -8,10 +8,10 @@ start = time.time()
 
 winners = [0, 0, 0, 0, 0, 0, 0]
 round_counter = 0
-game_count = 100
+game_count = 10
 
 for i in range(game_count):
-    game_wrapper = GameWrapper(70, 70, [RandomPlayer(i+1) for i in range(6)])
+    game_wrapper = GameWrapper(70, 70, [HeuristicPlayer(i+1) for i in range(6)])
     winner = game_wrapper.get_winner()
     round_counter += game_wrapper.get_round_counter()
     winners[winner] = winners[winner] + 1
