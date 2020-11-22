@@ -54,7 +54,7 @@ class Game:
             self.running = True
         else:
             self.running = False
-            print("Winner: " + str(self.winner))
+            #print("Winner: " + str(self.winner))
             self.logger.info("Winner: " + str(self.winner))
 
 
@@ -212,7 +212,7 @@ class Game:
         bounds = [0, 0, 1, 2, 3, 4, 5, 6]
         cmap = mpl.colors.ListedColormap(['white', 'red', 'green', 'blue', 'brown', 'orange', 'cyan'])
         norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
-        plt.colorbar(mpl.cm.ScalarMappable(cmap=cmap, norm=norm), ticks=bounds)
+        #plt.colorbar(mpl.cm.ScalarMappable(cmap=cmap, norm=norm), ticks=bounds)
         plt.imshow(self.board, cmap=cmap)
         plt.savefig('logs/' + str(self.logging_id) + '/result' + '.png')
         plt.close()

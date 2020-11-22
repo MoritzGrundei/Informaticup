@@ -1,13 +1,18 @@
 import json
 import random
 import numpy as np
-import Source.Utllity.GameMetrics
-import Source.Utllity.ActionChecker
+import Source.Utility.GameMetrics
+import Source.Utility.ActionChecker
 
 from Source.InformatiCupGame.PlayerInterface import PlayerInterface
 
 
 class HeuristicPlayer(PlayerInterface):
+
+    def __init__(self, id, weights):
+        self.id = id
+        self.command = None
+        self.weights = weights
 
     def set_command(self, new_command):
         self.command = new_command
@@ -34,16 +39,15 @@ class HeuristicPlayer(PlayerInterface):
         delta_position_turn_left = self.get_position_delta((translated_direction + 1) % 4, current_speed)
         delta_position_turn_right = self.get_position_delta((translated_direction - 1) % 4, current_speed)
 
-        valid_actions = Source.Utllity.ActionChecker.get_valid_actions(current_position, current_speed, delta_position_change_nothing, delta_position_speed_up, delta_position_slow_down, delta_position_turn_left, delta_position_turn_right, self.state)
+        valid_actions = Source.Utility.ActionChecker.get_valid_actions(current_position, current_speed, delta_position_change_nothing, delta_position_speed_up, delta_position_slow_down, delta_position_turn_left, delta_position_turn_right, self.state)
 
         scores = self.get_scores(valid_actions, current_position, current_speed, delta_position_change_nothing, delta_position_speed_up, delta_position_slow_down, delta_position_turn_left, delta_position_turn_right, self.state)
 
-        if len(scores) > 0:
-            action = valid_actions[scores.index(max(scores))]
-            print(action, max(scores))
-        #müsste hier nicht ein else hin da ansonsten immer random gewählt wird ?
+        action = " "
         try:
-            action = random.choice(valid_actions)
+            if len(scores) > 0:
+                action = valid_actions[scores.index(max(scores))]
+                #print(action, max(scores))
         except IndexError:
             action = " "
 
@@ -90,20 +94,20 @@ class HeuristicPlayer(PlayerInterface):
         return True
 
     def get_distance_to_players(self, state):
-        return Source.Utllity.GameMetrics.get_distance_to_players(state)
+        return Source.Utility.GameMetrics.get_distance_to_players(state)
 
     def get_average_distance(self, distances):
-        return Source.Utllity.GameMetrics.get_average_distance(distances)
+        return Source.Utility.GameMetrics.get_average_distance(distances)
 
     def get_free_spaces(self, new_position, state):
-        return Source.Utllity.GameMetrics.get_free_spaces(new_position, state)
+        return Source.Utility.GameMetrics.get_free_spaces(new_position, state)
 
 
     def get_avg_speed(self, state):
-        return Source.Utllity.GameMetrics.get_avg_speed(state)
+        return Source.Utility.GameMetrics.get_avg_speed(state)
 
     def get_score(self, new_position):
-        return self.get_avg_speed(self.state) + self.get_average_distance(self.get_distance_to_players(self.state)) + self.get_free_spaces(new_position, self.state)
+        return  self.weights[0] * self.get_avg_speed(self.state) +  self.weights[1] * self.get_average_distance(self.get_distance_to_players(self.state)) + self.weights[2] * self.get_free_spaces(new_position, self.state)
 
     def get_scores(self, valid_actions, current_position, current_speed, delta_position_change_nothing, delta_position_speed_up, delta_position_slow_down, delta_position_turn_left, delta_position_turn_right, game_state):
         scores = []

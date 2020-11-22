@@ -11,12 +11,12 @@ class GameWrapper:
         self.run()
 
     def run(self):
-        print(self.get_game_state(1))
-        print(self.game.running)
+        #print(self.get_game_state(1))
+        #print(self.game.running)
         while self.game.running:
             counter = 1
             inputs = []
-            print(self.get_game_state(1))
+            #print(self.get_game_state(1))
             self.game.log_game_state()
             for player in self.players:
                 inputs.append(player.get_command(self.game.return_game_state(counter)))
