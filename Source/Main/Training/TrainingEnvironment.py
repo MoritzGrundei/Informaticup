@@ -11,7 +11,7 @@ class TrainingEnvironment:
 
     def __init__(self, width, height, player):
         self.game = ReinforcementGameWrapper(width, height, [player, HeuristicPlayer(2, [1, 1, 1]), HeuristicPlayer(3, [1, 1, 1]),HeuristicPlayer(4, [1, 1, 1]), HeuristicPlayer(5, [1, 1, 1]), RandomPlayer(6)])
-        self.action_space = np.array(["change_nothing", "turn_left", "turn_right"])
+        self.action_space = np.array(["change_nothing", "turn_left", "turn_right", "slow_down", "speed_up"])
         self.width = width
         self.height = height
         self.player = player
@@ -41,9 +41,9 @@ class TrainingEnvironment:
                         metrics.get_free_spaces((self.own_player["x"], self.own_player["y"]),self.gamestate),
                         metrics.get_avg_speed(self.gamestate)])
 
-        #reward = 100* ((self.obs[0] - self.latest_observations[0]) + (self.obs[1] - self.latest_observations[1]))
-
-        reward =  random.random()
+        #pass reward into sigmoid function
+        reward = ((self.obs[0] - self.latest_observations[0]) + (self.obs[1] - self.latest_observations[1]))
+        reward = 0.5 * (1 + np.tanh(reward/2.0))
         self.latest_observations = self.obs
         return np.array([metrics.get_average_distance(metrics.get_distance_to_players(self.gamestate)),
                         metrics.get_free_spaces((self.own_player["x"], self.own_player["y"]), self.gamestate),
