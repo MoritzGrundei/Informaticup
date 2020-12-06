@@ -18,7 +18,6 @@ class HeuristicPlayer(PlayerInterface):
         self.command = new_command
 
     def get_command(self, game_state):
-
         #get current game state
         self.state = json.loads(game_state)
         self.own_player = self.state["players"][str(self.state["you"])]

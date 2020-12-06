@@ -11,3 +11,6 @@ class PlayerInterface:
 
     def is_gave_command(self):
         return self.gave_command
+
+    def get_id(self):
+        return self.id
