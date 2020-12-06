@@ -11,7 +11,7 @@ class TrainingEnvironment:
 
     def __init__(self, width, height, player):
         self.game = ReinforcementGameWrapper(width, height, [player, HeuristicPlayer(2, [1, 1, 1]), HeuristicPlayer(3, [1, 1, 1]),HeuristicPlayer(4, [1, 1, 1]), HeuristicPlayer(5, [1, 1, 1]), RandomPlayer(6)])
-        self.action_space = np.array(["change_nothing", "turn_left", "turn_right", "slow_down", "speed_up"])
+        self.action_space = np.array(["change_nothing", "turn_left", "turn_right"])
         self.width = width
         self.height = height
         self.player = player
