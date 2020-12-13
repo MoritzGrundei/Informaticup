@@ -86,7 +86,7 @@ class Game:
 
     # move player left
     def move_player_left(self, old_x, new_x, old_y, new_y, player):
-        if player.get_active() and new_x >= 0:
+        if player.get_active() and new_x >= 0 and new_x < self.width and new_y < self.height and new_y >= 0:
             if self.counter % 6 != 0:  # normal turn (no jump)
                 for i in range(old_x - new_x):
                     # cell was previously empty and is in range of board
@@ -106,7 +106,7 @@ class Game:
 
     # move player right works like other move methods
     def move_player_right(self, old_x, new_x, old_y, new_y, player):
-        if player.get_active() and new_x < self.width:
+        if player.get_active() and new_x < self.width and new_x >= 0 and new_y < self.height and new_y >= 0:
             if self.counter % 6 != 0:
                 for i in range(new_x - old_x):
                     if self.board[new_y][old_x + i+1] == 0 and self.check_pos_in_field(old_x + i+1, new_y):
@@ -125,7 +125,7 @@ class Game:
 
     # move player up works like other move methods
     def move_player_up(self, old_x, new_x, old_y, new_y, player):
-        if player.get_active() and new_y >= 0:
+        if player.get_active() and new_y >= 0 and new_y < self.height and new_x < self.width and new_x >= 0:
             if self.counter % 6 != 0:
                 for i in range(old_y - new_y):
                     if self.board[old_y - i-1][new_x] == 0 and self.check_pos_in_field(new_x, old_y - i-1):
@@ -144,7 +144,7 @@ class Game:
 
     # move player down works like other move methods
     def move_player_down(self, old_x, new_x, old_y, new_y, player):
-        if player.get_active() and new_y < self.height:
+        if player.get_active() and new_y < self.height and new_y >= 0 and new_x < self.width and new_x >= 0:
             if self.counter % 6 != 0:
                 for i in range(new_y - old_y):
                     if self.board[old_y + i+1][new_x] == 0 and self.check_pos_in_field(new_x, old_y + i+1):

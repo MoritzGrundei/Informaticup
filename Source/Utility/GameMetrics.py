@@ -68,3 +68,19 @@ def get_avg_speed(game_state):
             avg = sum / counter
     norm_avg = avg / 10
     return norm_avg
+
+
+def get_num_living_players(game_state):
+    num = 0
+    for i in range (6):
+        if game_state["players"][str(i+1)]["active"]:
+            num += 1
+    return num
+
+
+def get_player_data(game_state, id):
+    x = game_state["players"][str(id + 1)]["x"]
+    y = game_state["players"][str(id + 1)]["y"]
+    speed = game_state["players"][str(id + 1)]["speed"]
+
+    return x, y, speed

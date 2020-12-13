@@ -30,7 +30,7 @@ class Player:
 
     def slow_down(self):
         self.speed = self.speed - 1
-        if self.speed < 0:
+        if self.speed <= 0:
             self.deactivate()
 
     # function in case the player changes nothing

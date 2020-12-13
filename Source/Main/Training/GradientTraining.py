@@ -84,7 +84,7 @@ def train(env_name='CartPole-v0', hidden_sizes=[32], lr=1e-2,
 
             # act in the environment
             act = get_action(torch.as_tensor(obs, dtype=torch.float32))
-            print("Act: " + str(act))
+            #print("Act: " + str(act))
             player.set_command(act)
             # ignore underscore? nein (ist "_")
             obs, rew, done, _ = env.step()
