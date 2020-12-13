@@ -40,6 +40,8 @@ def get_average_distance(distances):
 
 
 def get_free_spaces(new_position, game_state):
+    own_player = game_state["players"][str(game_state["you"])]
+    speed = own_player["speed"]
     number_of_free_spaces = 0
     for i in range(-4, 5):
         for j in range(-4, 5):
@@ -48,7 +50,8 @@ def get_free_spaces(new_position, game_state):
                     number_of_free_spaces += 1
             except IndexError:
                 pass
-    normalised_num = number_of_free_spaces / 81.0
+
+    normalised_num = (number_of_free_spaces - speed) / 81.0
     return normalised_num
 
 
@@ -84,3 +87,15 @@ def get_player_data(game_state, id):
     speed = game_state["players"][str(id + 1)]["speed"]
 
     return x, y, speed
+
+def get_distances_to_borders(game_state, id):
+    board_height = game_state["height"]
+    board_width = game_state["width"]
+    position = game_state["players"][str(id + 1)]["x"], game_state["players"][str(id + 1)]["y"]
+    top_distance = position[1] - 1
+    bottom_distance = (board_height - 1) - (position[1] - 1)
+    right_distance = (board_width - 1) - (position[0] - 1)
+    left_distance = position[0] - 1
+
+    return top_distance, bottom_distance, right_distance, left_distance
+

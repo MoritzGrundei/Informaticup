@@ -119,12 +119,12 @@ class HeuristicPlayer(PlayerInterface):
             elif action == "speed_up":
                 new_position_speed_up = (
                 current_position[0] + delta_position_speed_up[0], current_position[1] + delta_position_speed_up[1])
-                scores += [self.get_score(new_position_speed_up)]
+                scores += [-100] #[self.get_score(new_position_speed_up)]
 
             elif action == "slow_down":
                 new_position_slow_down = (
                 current_position[0] + delta_position_slow_down[0], current_position[1] + delta_position_slow_down[1])
-                scores += [self.get_score(new_position_slow_down)]
+                scores += [-100] #[self.get_score(new_position_slow_down)]
 
             elif action == "turn_left":
                 new_position_turn_left = (

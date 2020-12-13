@@ -19,7 +19,7 @@ def mlp(sizes, activation=nn.Tanh, output_activation=nn.Identity):
 
 
 def train(env_name='CartPole-v0', hidden_sizes=[32], lr=1e-2,
-          epochs=20, batch_size=5000, render=False):
+          epochs=20, batch_size=10000, render=False):
     # make environment, check spaces, get obs / act dims
     #delete this
     #env = gym.make(env_name)

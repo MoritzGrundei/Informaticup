@@ -29,6 +29,8 @@ class ReinforcementGameWrapper:
         else:
             self.game.plot_field()
             self.winner = self.game.get_winner()
+            if(self.winner == 1):
+                print("We are the champions!")
             return False
 
     def get_game_state(self, id):
