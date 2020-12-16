@@ -2,12 +2,6 @@ import json
 import random
 import numpy as np
 
-def check_change_nothing():
-
-
-    return null
-
-
 def check_if_valid(current_position, position_delta, game_state):
     for i in range(abs(position_delta[0])):
         x_to_check = current_position[0] + np.sign(position_delta[0]) * (i + 1)
