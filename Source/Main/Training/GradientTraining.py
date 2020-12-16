@@ -3,14 +3,11 @@ import torch.nn as nn
 from torch.distributions.categorical import Categorical
 from torch.optim import Adam
 import numpy as np
-#import gym
-#from gym.spaces import Discrete, Box
 from Source.Main.Training.TrainingEnvironment import TrainingEnvironment
 from Source.Main.ReinforcementPlayer import ReinforcementPlayer
 
 player = ReinforcementPlayer(1)
 def mlp(sizes, activation=nn.Tanh, output_activation=nn.Identity):
-    print('Build a feedforward neural network.')
     layers = []
     for j in range(len(sizes) - 1):
         act = activation if j < len(sizes) - 2 else output_activation
@@ -18,16 +15,10 @@ def mlp(sizes, activation=nn.Tanh, output_activation=nn.Identity):
     return nn.Sequential(*layers)
 
 
-def train(env_name='CartPole-v0', hidden_sizes=[32], lr=1e-2,
-          epochs=20, batch_size=10000, render=False):
+def train(env_name='CartPole-v0', hidden_sizes=[32], lr=1e-2, epochs=30, batch_size=10000, render=False):
     # make environment, check spaces, get obs / act dims
-    #delete this
-    #env = gym.make(env_name)
+
     env = TrainingEnvironment(70, 70, player)
-    #assert isinstance(env.observation_space, Box), \
-        #"This example only works for envs with continuous state spaces."
-    #assert isinstance(env.action_space, Discrete), \
-        #"This example only works for envs with discrete action spaces."
 
     #get from Training Environment
     obs_dim = env.get_obs().shape[0]
@@ -63,21 +54,13 @@ def train(env_name='CartPole-v0', hidden_sizes=[32], lr=1e-2,
         batch_lens = []  # for measuring episode lengths
 
         # reset episode-specific variables
-        #implement this in Trainig Environment
         obs = env.reset()  # first obs comes from starting distribution
         done = False  # signal from environment that episode is over
         ep_rews = []  # list for rewards accrued throughout ep
 
-        # render first episode of each epoch
-        #finished_rendering_this_epoch = False
 
         # collect experience by acting in the environment with current policy
         while True:
-
-            # rendering
-            # delete this?
-            #if (not finished_rendering_this_epoch) and render:
-                #env.render()
 
             # save obs
             batch_obs.append(obs.copy())
@@ -105,19 +88,14 @@ def train(env_name='CartPole-v0', hidden_sizes=[32], lr=1e-2,
                 # reset episode-specific variables
                 obs, done, ep_rews = env.reset(), False, []
 
-                # won't render again this epoch
-                finished_rendering_this_epoch = True
-
                 # end experience loop if we have enough of it
                 if len(batch_obs) > batch_size:
                     break
 
         # take a single policy gradient update step
         optimizer.zero_grad()
-        batch_loss = compute_loss(obs=torch.as_tensor(batch_obs, dtype=torch.float32),
-                                  act=torch.as_tensor(batch_acts, dtype=torch.int32),
-                                  weights=torch.as_tensor(batch_weights, dtype=torch.float32)
-                                  )
+        batch_loss = compute_loss(obs=torch.as_tensor(batch_obs, dtype=torch.float32), act=torch.as_tensor(batch_acts, dtype=torch.int32),
+                                  weights=torch.as_tensor(batch_weights, dtype=torch.float32))
         batch_loss.backward()
         optimizer.step()
         return batch_loss, batch_rets, batch_lens
@@ -125,8 +103,7 @@ def train(env_name='CartPole-v0', hidden_sizes=[32], lr=1e-2,
     # training loop
     for i in range(epochs):
         batch_loss, batch_rets, batch_lens = train_one_epoch()
-        print('epoch: %3d \t loss: %.3f \t return: %.3f \t ep_len: %.3f' %
-              (i, batch_loss, np.mean(batch_rets), np.mean(batch_lens)))
+        print('epoch: %3d \t loss: %.3f \t return: %.3f \t ep_len: %.3f' % (i, batch_loss, np.mean(batch_rets), np.mean(batch_lens)))
 
 
 if __name__ == '__main__':
@@ -136,5 +113,6 @@ if __name__ == '__main__':
     parser.add_argument('--render', action='store_true')
     parser.add_argument('--lr', type=float, default=1e-2)
     args = parser.parse_args()
-    print('\nUsing simplest formulation of policy gradient.\n')
+    print("Obervations: Avg Distance, Free Spaces, Avg Speed, Num Living Players, Own Speed, Player Distances, Border Distances")
+    print("Reward: Avg Distance, Avg Speed, Num Living Players, Border Distances")
     train(env_name=args.env_name, render=args.render, lr=args.lr)

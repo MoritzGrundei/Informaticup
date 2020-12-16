@@ -99,3 +99,9 @@ def get_distances_to_borders(game_state, id):
 
     return top_distance, bottom_distance, right_distance, left_distance
 
+def get_own_speed(game_state):
+    own_player = game_state["players"][str(game_state["you"])]
+    speed = own_player["speed"]
+
+    return speed
+
