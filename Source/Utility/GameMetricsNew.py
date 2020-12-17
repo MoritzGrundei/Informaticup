@@ -2,11 +2,12 @@ import json
 import random
 import numpy as np
 
+
 class GameMetrics:
     def __init__(self):
         self.game_state = 0
 
-    #always set game state before getting metrics
+    # always set game state before getting metrics
     def set_game_state(self, game_state):
         self.game_state = game_state
 
@@ -21,7 +22,7 @@ class GameMetrics:
                 else:
                     if self.game_state["players"][str(i + 1)]["active"]:
                         enemy_position = (
-                        self.game_state["players"][str(i + 1)]["x"], self.game_state["players"][str(i + 1)]["y"])
+                            self.game_state["players"][str(i + 1)]["x"], self.game_state["players"][str(i + 1)]["y"])
                         distance = np.sqrt(np.power(current_position[0] - enemy_position[0], 2) + np.power(
                             current_position[1] - enemy_position[1], 2))
                         distances[i] = distance
@@ -108,11 +109,54 @@ class GameMetrics:
         normalised_num = (number_of_free_spaces - speed) / 81.0
         return normalised_num
 
+    def get_up_free(self):
+        own_player = self.game_state["players"][str(self.game_state["you"])]
+        speed = own_player["speed"]
+        current_position = (own_player["x"], own_player["y"])
+        free = True
+        for i in range(speed):
+            try:
+                if self.game_state["cells"][current_position[1] - i] != 0 or current_position[1]-i <= 0:
+                    free = False
+            except IndexError:
+                pass
+        return free
 
+    def get_down_free(self):
+        own_player = self.game_state["players"][str(self.game_state["you"])]
+        speed = own_player["speed"]
+        current_position = (own_player["x"], own_player["y"])
+        free = True
+        for i in range(speed):
+            try:
+                if self.game_state["cells"][current_position[1] + i] != 0 or current_position[1]+i <= 0:
+                    free = False
+            except IndexError:
+                pass
+        return free
 
+    def get_left_free(self):
+        own_player = self.game_state["players"][str(self.game_state["you"])]
+        speed = own_player["speed"]
+        current_position = (own_player["x"], own_player["y"])
+        free = True
+        for i in range(speed):
+            try:
+                if self.game_state["cells"][current_position[0] - i] != 0 or current_position[0]-i <= 0:
+                    free = False
+            except IndexError:
+                pass
+        return free
 
-
-
-
-
-
+    def get_right_free(self):
+        own_player = self.game_state["players"][str(self.game_state["you"])]
+        speed = own_player["speed"]
+        current_position = (own_player["x"], own_player["y"])
+        free = True
+        for i in range(speed):
+            try:
+                if self.game_state["cells"][current_position[0] + i] != 0 or current_position[0]+i <= 0:
+                    free = False
+            except IndexError:
+                pass
+        return free

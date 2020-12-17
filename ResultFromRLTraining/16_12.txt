@@ -1,0 +1,32 @@
+Observations: Avg Distance, Free Spaces, Avg Speed, Num Living Players, Own Speed, Player Distances, Border Distances
+Reward: Avg Distance, Avg Speed, Num Living Players, Border Distances
+epoch:   0 	 loss: 8.605 	 return: 2.819 	 ep_len: 5.982
+epoch:   1 	 loss: 11.132 	 return: 4.176 	 ep_len: 8.697
+epoch:   2 	 loss: 12.049 	 return: 5.273 	 ep_len: 10.959
+epoch:   3 	 loss: 12.339 	 return: 5.948 	 ep_len: 12.429
+epoch:   4 	 loss: 11.764 	 return: 6.551 	 ep_len: 13.833
+epoch:   5 	 loss: 11.574 	 return: 6.978 	 ep_len: 14.999
+epoch:   6 	 loss: 11.035 	 return: 7.597 	 ep_len: 16.242
+epoch:   7 	 loss: 11.314 	 return: 8.807 	 ep_len: 19.044
+epoch:   8 	 loss: 10.707 	 return: 10.008 	 ep_len: 21.725
+epoch:   9 	 loss: 10.198 	 return: 10.621 	 ep_len: 22.287
+epoch:  10 	 loss: 10.598 	 return: 11.873 	 ep_len: 26.060
+epoch:  11 	 loss: 9.478 	 return: 12.263 	 ep_len: 26.324
+epoch:  12 	 loss: 8.700 	 return: 12.273 	 ep_len: 26.847
+epoch:  13 	 loss: 7.867 	 return: 12.766 	 ep_len: 28.288
+epoch:  14 	 loss: 8.146 	 return: 14.748 	 ep_len: 31.309
+epoch:  15 	 loss: 6.723 	 return: 14.274 	 ep_len: 31.706
+epoch:  16 	 loss: 6.224 	 return: 14.767 	 ep_len: 32.180
+epoch:  17 	 loss: 5.534 	 return: 14.837 	 ep_len: 33.468
+epoch:  18 	 loss: 5.728 	 return: 15.534 	 ep_len: 33.286
+epoch:  19 	 loss: 4.940 	 return: 14.558 	 ep_len: 32.119
+epoch:  20 	 loss: 4.859 	 return: 14.420 	 ep_len: 30.356
+epoch:  21 	 loss: 5.287 	 return: 15.263 	 ep_len: 33.036
+epoch:  22 	 loss: 5.188 	 return: 14.715 	 ep_len: 31.357
+epoch:  23 	 loss: 5.308 	 return: 15.832 	 ep_len: 34.366
+epoch:  24 	 loss: 5.354 	 return: 15.932 	 ep_len: 34.993
+epoch:  25 	 loss: 4.472 	 return: 14.767 	 ep_len: 32.440
+epoch:  26 	 loss: 4.358 	 return: 14.444 	 ep_len: 32.000
+epoch:  27 	 loss: 4.110 	 return: 15.424 	 ep_len: 33.053
+epoch:  28 	 loss: 3.734 	 return: 15.347 	 ep_len: 33.946
+epoch:  29 	 loss: 3.521 	 return: 14.895 	 ep_len: 32.460

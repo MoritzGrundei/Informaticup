@@ -9,8 +9,8 @@ import numpy as np
 from Source.Main.HeuristicPlayer import HeuristicPlayer
 
 def plot_field(board):
-    bounds = [1, 2, 3, 4, 5, 6]
-    cmap = mpl.colors.ListedColormap(['red', 'green', 'blue', 'brown', 'orange', 'cyan'])
+    bounds = [0, 1, 2, 3, 4, 5, 6]
+    cmap = mpl.colors.ListedColormap(['white', 'purple', 'red', 'green', 'blue', 'brown', 'orange'])
     norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
     plt.colorbar(mpl.cm.ScalarMappable(cmap=cmap, norm=norm), ticks=bounds)
     plt.imshow(board, cmap=cmap)

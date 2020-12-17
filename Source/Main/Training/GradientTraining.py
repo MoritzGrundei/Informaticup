@@ -15,7 +15,7 @@ def mlp(sizes, activation=nn.Tanh, output_activation=nn.Identity):
     return nn.Sequential(*layers)
 
 
-def train(env_name='CartPole-v0', hidden_sizes=[32], lr=1e-2, epochs=30, batch_size=10000, render=False):
+def train(env_name='CartPole-v0', hidden_sizes=[32], lr=1e-2, epochs=30, batch_size=50000, render=False):
     # make environment, check spaces, get obs / act dims
 
     env = TrainingEnvironment(70, 70, player)
@@ -113,6 +113,7 @@ if __name__ == '__main__':
     parser.add_argument('--render', action='store_true')
     parser.add_argument('--lr', type=float, default=1e-2)
     args = parser.parse_args()
-    print("Obervations: Avg Distance, Free Spaces, Avg Speed, Num Living Players, Own Speed, Player Distances, Border Distances")
-    print("Reward: Avg Distance, Avg Speed, Num Living Players, Border Distances")
+    print("Obervations: Avg Distance, Free Spaces, Avg Speed, Num Living Players, Own Speed, Directions for Speed free, Player Distances, Border Distances")
+    print("Reward: 5")
+    print("No Speed Up, Slow Down")
     train(env_name=args.env_name, render=args.render, lr=args.lr)
