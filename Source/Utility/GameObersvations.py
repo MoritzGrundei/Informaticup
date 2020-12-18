@@ -19,7 +19,7 @@ class GameObservations:
                         self.game_metrics.get_num_living_players(),
                         self.game_metrics.get_own_speed(),
                         self.game_metrics.get_down_free(), self.game_metrics.get_down_free(), self.game_metrics.get_down_free(), self.game_metrics.get_down_free(),
-                        player_distances[0], player_distances[1], player_distances[2], player_distances[3],
+                        player_distances[1], player_distances[2], player_distances[3],
                         player_distances[4], player_distances[5],
                         distances[0], distances[1], distances[2], distances[3]])
         return obs

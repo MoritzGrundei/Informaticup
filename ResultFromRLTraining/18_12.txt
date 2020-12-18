@@ -1,0 +1,72 @@
+Obervations: Avg Distance, Free Spaces, Avg Speed, Num Living Players, Own Speed, Directions for Speed free, Player Distances, Border Distances
+Reward: 5
+No Speed Up, Slow Down
+epoch:   0 	 loss: 11.658 	 return: 7.760 	 ep_len: 11.574
+epoch:   1 	 loss: 15.956 	 return: 11.322 	 ep_len: 16.895
+epoch:   2 	 loss: 17.927 	 return: 15.274 	 ep_len: 22.801
+epoch:   3 	 loss: 17.206 	 return: 19.006 	 ep_len: 28.275
+epoch:   4 	 loss: 15.081 	 return: 21.802 	 ep_len: 32.366
+epoch:   5 	 loss: 11.821 	 return: 23.283 	 ep_len: 34.448
+epoch:   6 	 loss: 8.992 	 return: 22.838 	 ep_len: 33.720
+epoch:   7 	 loss: 6.436 	 return: 22.163 	 ep_len: 32.586
+epoch:   8 	 loss: 5.649 	 return: 22.817 	 ep_len: 33.277
+epoch:   9 	 loss: 4.528 	 return: 22.379 	 ep_len: 32.682
+epoch:  10 	 loss: 3.880 	 return: 21.979 	 ep_len: 31.885
+epoch:  11 	 loss: 3.539 	 return: 21.593 	 ep_len: 31.348
+epoch:  12 	 loss: 3.064 	 return: 21.561 	 ep_len: 31.257
+epoch:  13 	 loss: 3.315 	 return: 22.581 	 ep_len: 32.756
+epoch:  14 	 loss: 3.037 	 return: 22.179 	 ep_len: 32.208
+epoch:  15 	 loss: 2.923 	 return: 21.945 	 ep_len: 31.906
+epoch:  16 	 loss: 3.144 	 return: 21.757 	 ep_len: 31.615
+epoch:  17 	 loss: 3.280 	 return: 21.831 	 ep_len: 31.687
+epoch:  18 	 loss: 3.219 	 return: 21.908 	 ep_len: 31.810
+epoch:  19 	 loss: 3.403 	 return: 21.815 	 ep_len: 31.792
+epoch:  20 	 loss: 3.679 	 return: 22.036 	 ep_len: 32.090
+epoch:  21 	 loss: 3.860 	 return: 21.888 	 ep_len: 31.775
+epoch:  22 	 loss: 4.232 	 return: 21.880 	 ep_len: 31.861
+epoch:  23 	 loss: 4.814 	 return: 22.790 	 ep_len: 33.371
+epoch:  24 	 loss: 5.072 	 return: 22.513 	 ep_len: 32.884
+epoch:  25 	 loss: 5.510 	 return: 22.335 	 ep_len: 32.817
+epoch:  26 	 loss: 6.180 	 return: 22.501 	 ep_len: 33.117
+We are the champions!
+epoch:  27 	 loss: 6.794 	 return: 22.302 	 ep_len: 32.865
+epoch:  28 	 loss: 7.249 	 return: 22.741 	 ep_len: 33.588
+epoch:  29 	 loss: 8.249 	 return: 23.132 	 ep_len: 34.137
+
+Process finished with exit code 0
+
+Obervations: Avg Distance, Free Spaces, Avg Speed, Num Living Players, Own Speed, Directions for Speed free, Player Distances, Border Distances
+Reward: 6
+No Speed Up, Slow Down
+epoch:   0 	 loss: 10.969 	 return: 7.499 	 ep_len: 11.141
+epoch:   1 	 loss: 14.602 	 return: 10.108 	 ep_len: 15.066
+epoch:   2 	 loss: 15.339 	 return: 12.033 	 ep_len: 18.053
+epoch:   3 	 loss: 16.287 	 return: 15.345 	 ep_len: 22.956
+epoch:   4 	 loss: 15.705 	 return: 18.126 	 ep_len: 27.138
+epoch:   5 	 loss: 14.428 	 return: 20.932 	 ep_len: 31.107
+epoch:   6 	 loss: 11.691 	 return: 22.009 	 ep_len: 32.624
+epoch:   7 	 loss: 9.807 	 return: 22.444 	 ep_len: 33.171
+epoch:   8 	 loss: 8.268 	 return: 23.098 	 ep_len: 33.997
+epoch:   9 	 loss: 6.831 	 return: 22.564 	 ep_len: 33.061
+epoch:  10 	 loss: 6.162 	 return: 23.228 	 ep_len: 34.115
+epoch:  11 	 loss: 5.468 	 return: 22.467 	 ep_len: 32.704
+epoch:  12 	 loss: 5.509 	 return: 23.048 	 ep_len: 33.655
+epoch:  13 	 loss: 4.562 	 return: 21.731 	 ep_len: 31.647
+epoch:  14 	 loss: 4.656 	 return: 22.374 	 ep_len: 32.531
+epoch:  15 	 loss: 4.665 	 return: 22.316 	 ep_len: 32.644
+epoch:  16 	 loss: 4.656 	 return: 22.022 	 ep_len: 32.012
+epoch:  17 	 loss: 4.797 	 return: 22.116 	 ep_len: 32.229
+epoch:  18 	 loss: 4.779 	 return: 21.720 	 ep_len: 31.674
+epoch:  19 	 loss: 5.277 	 return: 22.788 	 ep_len: 33.291
+epoch:  20 	 loss: 5.293 	 return: 22.490 	 ep_len: 32.758
+epoch:  21 	 loss: 5.660 	 return: 22.488 	 ep_len: 32.886
+epoch:  22 	 loss: 6.339 	 return: 22.662 	 ep_len: 33.185
+epoch:  23 	 loss: 7.162 	 return: 23.146 	 ep_len: 33.873
+epoch:  24 	 loss: 7.621 	 return: 22.759 	 ep_len: 33.498
+epoch:  25 	 loss: 8.272 	 return: 22.917 	 ep_len: 33.701
+epoch:  26 	 loss: 8.441 	 return: 22.557 	 ep_len: 33.249
+epoch:  27 	 loss: 8.467 	 return: 22.422 	 ep_len: 33.141
+epoch:  28 	 loss: 8.854 	 return: 23.183 	 ep_len: 34.285
+epoch:  29 	 loss: 8.624 	 return: 23.192 	 ep_len: 34.065
+
+Process finished with exit code 0
