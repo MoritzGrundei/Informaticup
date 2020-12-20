@@ -61,7 +61,7 @@ class TrainingEnvironment:
             self.alive = False
 
         # pass reward into sigmoid function
-        reward = rewards.reward_5(self.obs, self.latest_observations)
+        reward = rewards.reward_8(self.obs, self.latest_observations)
         self.latest_observations = self.obs
         return self.get_obs(), reward, done, '_'
 
