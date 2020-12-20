@@ -92,14 +92,15 @@ def reward_8(obs, latest_obs): # free spaces, number of living players, distance
     if obs[3] < latest_obs[3]:
         reward = reward + 1
     if min(obs[-4:-1]) > min(latest_obs[-4:-1]):
-        reward = reward + 1
+        reward = reward + 3
     if obs[5] == True:
-        reward = reward + 1
+        reward = reward + 5
     if obs[6] == True:
-        reward = reward + 1
+        reward = reward + 5
     if obs[7] == True:
-        reward = reward + 1
+        reward = reward + 5
     if obs[8] == True:
-        reward = reward + 1
+        reward = reward + 5
+
 
     return 0.5 * (1 + np.tanh(reward / 2.0))

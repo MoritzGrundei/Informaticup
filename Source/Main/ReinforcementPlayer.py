@@ -4,7 +4,7 @@ class ReinforcementPlayer(PlayerInterface):
     def __init__(self, id):
         self.id = id
         self.command = None
-        self.action_space = ["turn_left", "turn_right", "change_nothing", "speed_up", "slow_down"] # , "slow_down", "speed_up"
+        self.action_space = ["turn_left", "turn_right", "change_nothing"] # , "slow_down", "speed_up"
 
     def get_command(self, game_state):
         return self.command
