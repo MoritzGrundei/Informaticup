@@ -73,7 +73,13 @@ class TrainingEnvironment:
                                                                        delta_position_turn_left,
                                                                        delta_position_turn_right, self.game_state)
 
-        if action in valid_actions:
+        if action == 0:
+            act = 'turn_left'
+        elif action == 1:
+            act = 'turn_right'
+        else:
+            act = "change_nothing"
+        if act in valid_actions:
             self.player.set_command(action)
             done = not self.game.tick()
             self.game_state = json.loads(self.game.get_game_state(self.player.get_id()))
@@ -107,7 +113,7 @@ class TrainingEnvironment:
                 self.alive = False
 
             # pass reward into sigmoid function
-            reward = -0.05
+            reward = -1
             self.latest_observations = self.obs
             return self.get_obs(), reward, done, '_'
 
