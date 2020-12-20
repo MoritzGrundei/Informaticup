@@ -1,3 +1,5 @@
+from gym.spaces import Discrete
+
 from Source.InformatiCupGame.ReinforcementGameWrapper import ReinforcementGameWrapper
 from Source.Utility.GameObersvations import GameObservations
 from Source.Main.RandomPlayer import RandomPlayer
@@ -17,7 +19,7 @@ class TrainingEnvironment:
                                              [player, HeuristicPlayer(2, [1, 1, 1]), HeuristicPlayer(3, [1, 1, 1]),
                                               HeuristicPlayer(4, [1, 1, 1]), HeuristicPlayer(5, [1, 1, 1]),
                                               HeuristicPlayer(6, [1, 1, 1])])
-        self.action_space = np.array(["turn_left", "turn_right", "change_nothing"]) # , "slow_down", "speed_up"
+        self.action_space = np.array(["turn_left", "turn_right", "change_nothing", "speed_up", "slow_down"]) # , "slow_down", "speed_up"
         self.width = width
         self.height = height
         self.player = player
@@ -51,7 +53,8 @@ class TrainingEnvironment:
         return self.get_obs()
 
     # One Step in the Game/Training Cycle
-    def step(self):
+    def step(self, action):
+        self.player.set_command(action)
         done = not self.game.tick()
         self.game_state = json.loads(self.game.get_game_state(self.player.get_id()))
         self.own_player = self.game_state["players"][str(self.game_state["you"])]
@@ -69,7 +72,7 @@ class TrainingEnvironment:
         return self.obs
 
     def get_action_space(self):
-        return self.action_space
+        return np.array(self.action_space)
 
     def set_obs(self):
         self.obs = self.game_observer.get_obs_1(self.game_state)
@@ -82,3 +85,6 @@ class TrainingEnvironment:
                             # player_distances[0], player_distances[1], player_distances[2], player_distances[3],
                             # player_distances[4], player_distances[5],
                             # distances[0], distances[1], distances[2], distances[3]])
+
+    def get_discrete_action_space(self):
+        return Discrete(self.action_space.shape[0])

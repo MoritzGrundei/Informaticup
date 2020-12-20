@@ -15,7 +15,7 @@ def mlp(sizes, activation=nn.Tanh, output_activation=nn.Identity):
     return nn.Sequential(*layers)
 
 
-def train(env_name='CartPole-v0', hidden_sizes=[32], lr=1e-2, epochs=30, batch_size=50000, render=False):
+def train(env_name='CartPole-v0', hidden_sizes=[32], lr=1e-2, epochs=20, batch_size=5000, render=False):
     # make environment, check spaces, get obs / act dims
 
     env = TrainingEnvironment(70, 70, player)

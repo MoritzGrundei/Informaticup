@@ -28,8 +28,6 @@ def reward_4(obs, latest_obs):  # reward from Change in num Living Players and D
 
 def reward_simple(obs, latest_obs):  # reward is one as long as player is alive + Speed 1 - 3
     reward = 1
-    if 1 <= obs[4] <= 3:
-        reward = reward + 0.5
     return reward
 
 
