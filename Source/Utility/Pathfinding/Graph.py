@@ -92,21 +92,29 @@ class Graph:
     # implementation of Dijkstra
     def get_shortest_path(self, dest_node):
         # initialize
-        dest_node.set_dist(0)
+        start_node = self.get_start_node()
+        start_node.set_dist(0)
         nodes_queue = self.nodes.copy()
 
-        #find shortest path until dest_node
+        #find shortest path (until dest_node)
         while len(nodes_queue) > 0:
             min_node = self.get_node_with_lowest_dist(nodes_queue)
             nodes_queue.remove(min_node)
+            if min_node == dest_node:
+                break
             neighbors, weights = self.get_neighbors(min_node)
+            for i in range(len(neighbors)):
+                new_dist = min_node.get_dist() + weights[i]
+                if new_dist < neighbors[i].get_dist():
+                    neighbors[i].set_dist(new_dist)
+                    neighbors[i].set_pred(min_node)
 
         path = [dest_node]
         current_node = dest_node
         while current_node.get_pred():
             current_node = current_node.get_pred()
             path.append(current_node)
-        return path.reverse()
+        return path[::-1]
 
     def get_node_with_lowest_dist(self, nodes):
         min_dist = np.inf
@@ -115,7 +123,7 @@ class Graph:
             if node.get_dist() < min_dist:
                 min_dist = node.get_dist()
                 min_node = node
-        return node
+        return min_node
 
     def get_neighbors(self, node):
         neighbors = []
@@ -123,6 +131,14 @@ class Graph:
         for edge in self.edges:
             if edge.get_nodes()[0] == node:
                 neighbors.append(edge.get_nodes()[1])
-                weights.append(edge.get_weight())
             elif edge.get_nodes()[1] == node:
                 neighbors.append(edge.get_nodes()[0])
+            else:
+                continue
+            weights.append(edge.get_weight())
+        return neighbors, weights
+
+    def get_start_node(self):
+        for node in self.nodes:
+            if node.get_x() == self.current_position_x and node.get_y() == self.current_position_y:
+                return node
