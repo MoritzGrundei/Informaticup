@@ -10,57 +10,44 @@ class Graph:
         self.board = board
         self.nodes = []
         self.edges = []
-        self.create_graph(current_position_x, current_position_y, width, height)
+        self.create_graph(width, height)
         self.get_connected_components()
 
-    def create_graph(self, current_position_x, current_position_y, width, height):
+    def create_graph(self, width, height):
         # create nodes
         for i in range(-4,5):
             for j in range(-4,5):
-                x = current_position_x + i
-                y = current_position_y + j
+                node_x = self.current_position_x + i
+                node_y = self.current_position_y + j
                 #idea: include "dead" nodes for now
                 #if x >= 0 and x < width and y >= 0 and y < height:
-                self.nodes.append(Node(x,y))
+                self.nodes.append(Node(node_x, node_y))
         # create edges
-        print(self.board[current_position_x][current_position_y])
+        self.board[self.current_position_y][self.current_position_x] = 0
         for node in range(0,len(self.nodes),2):
             x = self.nodes[node].get_x()
             y = self.nodes[node].get_y()
             if 0 <= x < width and 0 <= y < height:
 
                 # creates edge to right neighbor
-                if x + 1 < width and x < current_position_x + 4:
-                    print(
-                        "checking: " + str((x, y)) + "to " + str((x + 1, y)) + ": " + str(self.board[x][y]) + " " + str(
-                            self.board[x + 1][y]))
-                    if self.board[x][y] == 0  and self.board[x + 1][y] == 0:
+                if x + 1 < width and x < self.current_position_x + 4:
+                    if self.board[y][x] == 0  and self.board[y][x+1] == 0:
                         self.edges.append(Edge(self.nodes[node], self.nodes[node+1], 1))
 
                 # creates edge to left neighbor
-                if x - 1 >= 0 and x > current_position_x - 4:
-                    print(
-                        "checking: " + str((x, y)) + "to " + str((x - 1, y)) + ": " + str(self.board[x][y]) + " " + str(
-                            self.board[x - 1][y]))
-                    if self.board[x][y] == 0 and self.board[x - 1][y] == 0:
+                if x - 1 >= 0 and x > self.current_position_x - 4:
+                    if self.board[y][x] == 0 and self.board[y][x-1] == 0:
                         self.edges.append(Edge(self.nodes[node], self.nodes[node - 1], 1))
 
                 # creates edge to upper neighbor
-                if node >= 9 and y > 0 and y > current_position_y - 4:
-                    print(
-                        "checking: " + str((x, y)) + "to " + str((x, y - 1)) + ": " + str(self.board[x][y]) + " " + str(
-                            self.board[x][y - 1]))
-                    if self.board[x][y] == 0 and self.board[x][y-1] == 0:
+                if node >= 9 and y > 0 and y > self.current_position_y - 4:
+                    if self.board[y][x] == 0 and self.board[y-1][x] == 0:
                         self.edges.append(Edge(self.nodes[node], self.nodes[node - 9], 1))
 
                 # creates edge to bottom neighbor
-                if node < len(self.nodes) - 9 and y < height - 1 and y < current_position_y + 4:
-                    print(
-                        "checking: " + str((x, y)) + "to " + str((x, y + 1)) + ": " + str(self.board[x][y]) + " " + str(
-                            self.board[x][y + 1]))
-                    if self.board[x][y] == 0 and self.board[x][y + 1] == 0:
+                if node < len(self.nodes) - 9 and y < height - 1 and y < self.current_position_y + 4:
+                    if self.board[y][x] == 0 and self.board[y+1][x] == 0:
                         self.edges.append(Edge(self.nodes[node], self.nodes[node + 9], 1))
-        print("edges length: " + str(len(self.edges)))
     def __str__(self):
         nodes = ""
         for i in range(len(self.nodes)):
@@ -81,8 +68,3 @@ class Graph:
         for edge in self.edges:
             if start_node in edge.get_nodes():
                 starting_edges.append(edge)
-
-        print("starting node: " + str(start_node))
-        print("starting edges: ")
-        for edge in starting_edges:
-            print(str(edge))

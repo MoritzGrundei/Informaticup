@@ -8,21 +8,13 @@ from Source.InformatiCupGame.PlayerInterface import PlayerInterface
 
 class PathFindingPlayer(PlayerInterface):
 
-    def __init__(self, game_state):
-        if game_state != None:
-            x = game_state[str(game_state["you"])]["x"]
-            y = game_state[str(game_state["you"])]["y"]
-            self.graph = Graph(game_state["cells"], x, y, game_state["width"], game_state["height"])
-        else:
-            self.graph = None
+    def __init__(self):
+        self.graph = None
 
     def get_command(self, game_state):
         game_state = json.loads(game_state)
-        #destination = self.get_destination(game_state)
-
         x = game_state["players"][str(game_state["you"])]["x"]
         y = game_state["players"][str(game_state["you"])]["y"]
-        print("game state: " + str((x,y)) + str(game_state["cells"][x][y]))
         self.graph = Graph(game_state["cells"], x, y, game_state["width"], game_state["height"])
         return "turn_right"
 

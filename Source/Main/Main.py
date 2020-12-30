@@ -13,7 +13,7 @@ round_counter = 0
 game_count = 3
 
 for i in range(game_count):
-    game_wrapper = GameWrapper(70, 70, [HeuristicPlayer(1, [1, 1, 1]), HeuristicPlayer(2, [1, 1, 1]), HeuristicPlayer(3, [1, 1, 1]), HeuristicPlayer(4, [1, 1, 1]), HeuristicPlayer(5, [1, 1, 1]), PathFindingPlayer(None)])
+    game_wrapper = GameWrapper(70, 70, [HeuristicPlayer(1, [1, 1, 1]), HeuristicPlayer(2, [1, 1, 1]), HeuristicPlayer(3, [1, 1, 1]), HeuristicPlayer(4, [1, 1, 1]), HeuristicPlayer(5, [1, 1, 1]), PathFindingPlayer()])
     winner = game_wrapper.get_winner()
     round_counter += game_wrapper.get_round_counter()
     winners[winner] = winners[winner] + 1
