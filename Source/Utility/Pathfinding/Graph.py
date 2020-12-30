@@ -68,3 +68,23 @@ class Graph:
         for edge in self.edges:
             if start_node in edge.get_nodes():
                 starting_edges.append(edge)
+        reachable_nodes = []
+        temp_edges = self.edges.copy()
+
+
+        while len(starting_edges) > 0:
+            for edge in starting_edges:
+                if not edge.get_nodes()[0] in reachable_nodes:
+                    reachable_nodes.append(edge.get_nodes()[0])
+                    for temp_edge in temp_edges:
+                        if edge.get_nodes()[0] in temp_edge.get_nodes() and not temp_edge in starting_edges:
+                            starting_edges.append(temp_edge)
+
+                if not edge.get_nodes()[1] in reachable_nodes:
+                    reachable_nodes.append(edge.get_nodes()[1])
+                    for temp_edge in temp_edges:
+                        if edge.get_nodes()[1] in temp_edge.get_nodes() and not temp_edge in starting_edges :
+                            starting_edges.append(temp_edge)
+                starting_edges.remove(edge)
+                temp_edges.remove(edge)
+        return reachable_nodes
