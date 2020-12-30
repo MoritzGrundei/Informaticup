@@ -18,12 +18,12 @@ class PathFindingPlayer(PlayerInterface):
 
     def get_command(self, game_state):
         game_state = json.loads(game_state)
-        destination = self.get_destination(game_state)
+        #destination = self.get_destination(game_state)
 
         x = game_state["players"][str(game_state["you"])]["x"]
         y = game_state["players"][str(game_state["you"])]["y"]
+        print("game state: " + str((x,y)) + str(game_state["cells"][x][y]))
         self.graph = Graph(game_state["cells"], x, y, game_state["width"], game_state["height"])
-        print(self.graph)
         return "turn_right"
 
     def get_destination(self, game_state):

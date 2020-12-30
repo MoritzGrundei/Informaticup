@@ -31,6 +31,8 @@ class ReinforcementGameWrapper:
             self.winner = self.game.get_winner()
             if(self.winner == 1):
                 print("We are the champions!")
+            else:
+                print("Big L")
             return False
 
     def get_game_state(self, id):

@@ -98,15 +98,15 @@ class GameMetrics:
         own_player = self.game_state["players"][str(self.game_state["you"])]
         speed = own_player["speed"]
         number_of_free_spaces = 0
-        for i in range(-4, 5):
-            for j in range(-4, 5):
+        for i in range(-2, 3):
+            for j in range(-2, 3):
                 try:
                     if self.game_state["cells"][new_position[1] + i][new_position[0] + j] == 0:
                         number_of_free_spaces += 1
                 except IndexError:
                     pass
 
-        normalised_num = (number_of_free_spaces - speed) / 81.0
+        normalised_num = (number_of_free_spaces - speed) / 25.0
         return normalised_num
 
     def get_up_free(self):
