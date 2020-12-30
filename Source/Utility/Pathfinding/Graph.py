@@ -88,3 +88,41 @@ class Graph:
                 starting_edges.remove(edge)
                 temp_edges.remove(edge)
         return reachable_nodes
+
+    # implementation of Dijkstra
+    def get_shortest_path(self, dest_node):
+        # initialize
+        dest_node.set_dist(0)
+        nodes_queue = self.nodes.copy()
+
+        #find shortest path until dest_node
+        while len(nodes_queue) > 0:
+            min_node = self.get_node_with_lowest_dist(nodes_queue)
+            nodes_queue.remove(min_node)
+            neighbors, weights = self.get_neighbors(min_node)
+
+        path = [dest_node]
+        current_node = dest_node
+        while current_node.get_pred():
+            current_node = current_node.get_pred()
+            path.append(current_node)
+        return path.reverse()
+
+    def get_node_with_lowest_dist(self, nodes):
+        min_dist = np.inf
+        min_node = None
+        for node in nodes:
+            if node.get_dist() < min_dist:
+                min_dist = node.get_dist()
+                min_node = node
+        return node
+
+    def get_neighbors(self, node):
+        neighbors = []
+        weights = []
+        for edge in self.edges:
+            if edge.get_nodes()[0] == node:
+                neighbors.append(edge.get_nodes()[1])
+                weights.append(edge.get_weight())
+            elif edge.get_nodes()[1] == node:
+                neighbors.append(edge.get_nodes()[0])
