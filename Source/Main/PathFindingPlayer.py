@@ -22,7 +22,10 @@ class PathFindingPlayer(PlayerInterface):
         self.graph = Graph(game_state["cells"], x, y, game_state["width"], game_state["height"], game_state["players"][str(game_state["you"])]["direction"], self.field_size)
         destination = self.get_destination(self.graph.get_connected_components(), game_state)
         path = self.graph.get_shortest_path(destination)
-        return self.get_action_from_path(path, game_state["players"][str(game_state["you"])]["direction"])
+        try:
+            return self.get_action_from_path(path, game_state["players"][str(game_state["you"])]["direction"])
+        except IndexError:
+            return "change_nothing"
 
     def get_action_from_path(self, path, direction):
         starting_node = path[0]
