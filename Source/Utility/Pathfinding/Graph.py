@@ -4,24 +4,28 @@ import numpy as np
 
 class Graph:
 
-    def __init__(self, board, current_position_x, current_position_y, width, height):
+    def __init__(self, board, current_position_x, current_position_y, width, height, direction, field_size):
         self.current_position_x = current_position_x
         self.current_position_y = current_position_y
         self.board = board
         self.nodes = []
         self.edges = []
-        self.create_graph(width, height)
+        self.start_direction = direction
+        self.create_graph(width, height, field_size)
         self.get_connected_components()
 
-    def create_graph(self, width, height):
+    def create_graph(self, width, height, field_size):
         # create nodes
-        for i in range(-4,5):
-            for j in range(-4,5):
-                node_x = self.current_position_x + i
-                node_y = self.current_position_y + j
+        bound_low = -(field_size / 2) + 0.5
+        bound_high = field_size / 2 + 0.5
+        for i in range(int(bound_low), int(bound_high)):
+            for j in range(int(bound_low), int(bound_high)):
                 #idea: include "dead" nodes for now
                 #if x >= 0 and x < width and y >= 0 and y < height:
+                node_x = self.current_position_x + j
+                node_y = self.current_position_y + i
                 self.nodes.append(Node(node_x, node_y))
+
         # create edges
         self.board[self.current_position_y][self.current_position_x] = 0
         for node in range(0,len(self.nodes),2):
@@ -31,23 +35,48 @@ class Graph:
 
                 # creates edge to right neighbor
                 if x + 1 < width and x < self.current_position_x + 4:
-                    if self.board[y][x] == 0  and self.board[y][x+1] == 0:
+                    if node < field_size * field_size - 1  and self.board[y][x] == 0  and self.board[self.nodes[node+1].get_y()][self.nodes[node+1].get_x()] == 0:
                         self.edges.append(Edge(self.nodes[node], self.nodes[node+1], 1))
 
                 # creates edge to left neighbor
                 if x - 1 >= 0 and x > self.current_position_x - 4:
-                    if self.board[y][x] == 0 and self.board[y][x-1] == 0:
+                    if node > 0 and self.board[y][x] == 0 and self.board[self.nodes[node - 1].get_y()][self.nodes[node - 1].get_x()] == 0:
                         self.edges.append(Edge(self.nodes[node], self.nodes[node - 1], 1))
 
                 # creates edge to upper neighbor
-                if node >= 9 and y > 0 and y > self.current_position_y - 4:
-                    if self.board[y][x] == 0 and self.board[y-1][x] == 0:
-                        self.edges.append(Edge(self.nodes[node], self.nodes[node - 9], 1))
+                if node >= field_size and y > 1 and y > self.current_position_y - 4:
+                    if self.board[y][x] == 0 and self.board[self.nodes[node - field_size].get_y()][self.nodes[node - field_size].get_x()] == 0:
+                        self.edges.append(Edge(self.nodes[node], self.nodes[node - field_size], 1))
 
                 # creates edge to bottom neighbor
-                if node < len(self.nodes) - 9 and y < height - 1 and y < self.current_position_y + 4:
-                    if self.board[y][x] == 0 and self.board[y+1][x] == 0:
-                        self.edges.append(Edge(self.nodes[node], self.nodes[node + 9], 1))
+                if node < len(self.nodes) - field_size  and y < height - 1 and y < self.current_position_y + 4:
+                    if self.board[y][x] == 0 and self.board[self.nodes[node + field_size].get_y()][self.nodes[node + field_size].get_x()] == 0:
+                        self.edges.append(Edge(self.nodes[node], self.nodes[node + field_size], 1))
+
+        # remove back edge from starting node
+        for edge in self.edges:
+            nodes = edge.get_nodes()
+            if self.current_position_x == nodes[0].get_x() and self.current_position_y == nodes[0].get_y():
+                starting_node = nodes[0]
+                other_node = nodes[1]
+            elif self.current_position_x == nodes[1].get_x() and self.current_position_y == nodes[1].get_y():
+                starting_node = nodes[1]
+                other_node = nodes[0]
+            else:
+                continue
+            if self.start_direction == "up" and starting_node.get_y() - other_node.get_y() < 0:
+                self.edges.remove(edge)
+                break
+            elif self.start_direction == "down" and starting_node.get_y() - other_node.get_y() > 0:
+                self.edges.remove(edge)
+                break
+            elif self.start_direction == "right" and starting_node.get_x() - other_node.get_x() > 0:
+                self.edges.remove(edge)
+                break
+            elif self.start_direction == "left" and starting_node.get_x() - other_node.get_x() < 0:
+                self.edges.remove(edge)
+                break
+
     def __str__(self):
         nodes = ""
         for i in range(len(self.nodes)):
@@ -94,7 +123,7 @@ class Graph:
         # initialize
         start_node = self.get_start_node()
         start_node.set_dist(0)
-        nodes_queue = self.nodes.copy()
+        nodes_queue = self.get_connected_components().copy()
 
         #find shortest path (until dest_node)
         while len(nodes_queue) > 0:
@@ -111,9 +140,13 @@ class Graph:
 
         path = [dest_node]
         current_node = dest_node
-        while current_node.get_pred():
-            current_node = current_node.get_pred()
-            path.append(current_node)
+        try:
+            while current_node.get_pred():
+                current_node = current_node.get_pred()
+                path.append(current_node)
+        except (AttributeError, ValueError):
+            pass
+
         return path[::-1]
 
     def get_node_with_lowest_dist(self, nodes):
@@ -142,3 +175,4 @@ class Graph:
         for node in self.nodes:
             if node.get_x() == self.current_position_x and node.get_y() == self.current_position_y:
                 return node
+

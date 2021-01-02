@@ -28,7 +28,7 @@ class HeuristicPlayer(PlayerInterface):
 
         translated_direction = self.translate_direction(current_direction)
         # if turn left: direction = (translated_direction + 1) % 4
-        # if turn left: direction = (translated_direction - 1) % 4
+        # if turn right: direction = (translated_direction - 1) % 4
 
         # define all valid actions
 

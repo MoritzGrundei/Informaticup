@@ -14,16 +14,15 @@ class GameWrapper:
         #print(self.get_game_state(1))
         #print(self.game.running)
         while self.game.running:
+        #while self.game.players[0].get_active():
             counter = 1
             inputs = []
-            #print(self.get_game_state(1))
             self.game.log_game_state()
             for player in self.players:
                 inputs.append(player.get_command(self.game.return_game_state(counter)))
                 counter = counter + 1
             self.game.tick(inputs)
         self.game.plot_field()
-
         self.winner = self.game.get_winner()
 
     def get_game_state(self, id):

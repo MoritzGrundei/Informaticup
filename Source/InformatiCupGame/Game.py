@@ -66,23 +66,24 @@ class Game:
         if self.running:
             self.collect_inputs(inputs)
             for player in self.players:
-                old_x, old_y = player.get_position()
-                player.move()
-                new_x, new_y = player.get_position()
-                if player.get_direction() == "right":  # player moves right
-                    self.move_player_right(old_x, new_x, old_y, new_y, player)
+                if player.get_active():
+                    old_x, old_y = player.get_position()
+                    player.move()
+                    new_x, new_y = player.get_position()
+                    if player.get_direction() == "right":  # player moves right
+                       self.move_player_right(old_x, new_x, old_y, new_y, player)
 
-                elif player.get_direction() == "left":  # player moves left
-                    self.move_player_left(old_x, new_x, old_y, new_y, player)
+                    elif player.get_direction() == "left":  # player moves left
+                        self.move_player_left(old_x, new_x, old_y, new_y, player)
 
-                elif player.get_direction() == "up":  # player moves upwards
-                    self.move_player_up(old_x, new_x, old_y, new_y, player)
+                    elif player.get_direction() == "up":  # player moves upwards
+                        self.move_player_up(old_x, new_x, old_y, new_y, player)
 
-                elif player.get_direction() == "down":  # player moves downwards
-                    self.move_player_down(old_x, new_x, old_y, new_y, player)
+                    elif player.get_direction() == "down":  # player moves downwards
+                        self.move_player_down(old_x, new_x, old_y, new_y, player)
 
-                else:  # invalid player direction
-                    player.deactivate()
+                    else:  # invalid player direction
+                        player.deactivate()
 
     # move player left
     def move_player_left(self, old_x, new_x, old_y, new_y, player):
@@ -212,7 +213,7 @@ class Game:
         bounds = [0, 0, 1, 2, 3, 4, 5, 6]
         cmap = mpl.colors.ListedColormap(['white', 'red', 'green', 'blue', 'brown', 'orange', 'cyan'])
         norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
-        #plt.colorbar(mpl.cm.ScalarMappable(cmap=cmap, norm=norm), ticks=bounds)
+        plt.colorbar(mpl.cm.ScalarMappable(cmap=cmap, norm=norm), ticks=bounds)
         plt.imshow(self.board, cmap=cmap)
         plt.savefig('logs/' + str(self.logging_id) + '/result' + '.png')
         plt.close()

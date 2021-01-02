@@ -12,12 +12,15 @@ def get_distance_to_players(game_state):
             if i + 1 == game_state["you"]:
                 distances[i] = 0
             else:
-                if game_state["players"][str(i + 1)]["active"]:
-                    enemy_position = (game_state["players"][str(i + 1)]["x"], game_state["players"][str(i + 1)]["y"])
-                    distance = np.sqrt(np.power(current_position[0] - enemy_position[0], 2) + np.power(
-                        current_position[1] - enemy_position[1], 2))
-                    distances[i] = distance
-                else:
+                try:
+                    if game_state["players"][str(i + 1)]["active"]:
+                        enemy_position = (game_state["players"][str(i + 1)]["x"], game_state["players"][str(i + 1)]["y"])
+                        distance = np.sqrt(np.power(current_position[0] - enemy_position[0], 2) + np.power(
+                            current_position[1] - enemy_position[1], 2))
+                        distances[i] = distance
+                    else:
+                        distances[i] = 0
+                except KeyError:
                     distances[i] = 0
     max_distance = np.sqrt(np.power(game_state["width"], 2) + np.power(game_state["height"], 2))
     for i in range(len(distances)):
@@ -64,9 +67,12 @@ def get_avg_speed(game_state):
             if i + 1 == game_state["you"]:
                 pass
             else:
-                if game_state["players"][str(i + 1)]["active"]:
-                    sum += game_state["players"][str(i + 1)]["speed"]
-                    counter += 1
+                try:
+                    if game_state["players"][str(i + 1)]["active"]:
+                        sum += game_state["players"][str(i + 1)]["speed"]
+                        counter += 1
+                except KeyError:
+                    pass
         if counter > 0:
             avg = sum / counter
     norm_avg = avg / 10

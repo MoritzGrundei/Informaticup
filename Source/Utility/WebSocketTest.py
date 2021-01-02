@@ -6,11 +6,12 @@ import websockets
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
+from Source.Main.PathFindingPlayer import PathFindingPlayer
 from Source.Main.HeuristicPlayer import HeuristicPlayer
 
 def plot_field(board):
-    bounds = [0, 1, 2, 3, 4, 5, 6]
-    cmap = mpl.colors.ListedColormap(['white', 'purple', 'red', 'green', 'blue', 'brown', 'orange'])
+    bounds = [0, 0, 1, 2, 3, 4, 5, 6]
+    cmap = mpl.colors.ListedColormap(['white', 'red', 'green', 'blue', 'brown', 'orange', 'cyan'])
     norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
     plt.colorbar(mpl.cm.ScalarMappable(cmap=cmap, norm=norm), ticks=bounds)
     plt.imshow(board, cmap=cmap)
@@ -27,7 +28,7 @@ async def play():
         print("Started Game")
         state = json.loads(state_json)
         own_player = state["players"][str(state["you"])]
-        player = HeuristicPlayer(own_player, [1, 1, 1])
+        player = PathFindingPlayer(41)
         action = player.get_command(state_json)
         action_json = json.dumps({"action": action})
         await websocket.send(action_json)
@@ -41,6 +42,8 @@ async def play():
             action_json = json.dumps({"action": action})
             await websocket.send(action_json)
         print(state)
+        print(own_player)
+        print(own_player["active"])
         plot_field(np.array(state["cells"]))
 
 asyncio.get_event_loop().run_until_complete(play())
