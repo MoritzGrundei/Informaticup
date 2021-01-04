@@ -28,13 +28,13 @@ def get_valid_actions(current_position, current_speed, delta_change_nothing, del
     if check_if_valid(current_position, delta_change_nothing, game_state):
         valid_actions += ["change_nothing"]
 
-    if current_speed < 10:
-        if check_if_valid(current_position, delta_speed_up, game_state):
-            valid_actions += ["speed_up"]
+    # if current_speed < 10:
+        # if check_if_valid(current_position, delta_speed_up, game_state):
+            # valid_actions += ["speed_up"]
 
-    if current_speed > 1:
-        if check_if_valid(current_position, delta_slow_down, game_state):
-            valid_actions += ["slow_down"]
+    # if current_speed > 1:
+        # if check_if_valid(current_position, delta_slow_down, game_state):
+            # valid_actions += ["slow_down"]
 
     if check_if_valid(current_position, delta_turn_left, game_state):
         valid_actions += ["turn_left"]

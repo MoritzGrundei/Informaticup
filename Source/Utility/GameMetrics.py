@@ -1,7 +1,7 @@
 import json
 import random
 import numpy as np
-
+from Source.Utility.Pathfinding.Graph import Graph
 
 def get_distance_to_players(game_state):
     own_player = game_state["players"][str(game_state["you"])]
@@ -110,4 +110,9 @@ def get_own_speed(game_state):
     speed = own_player["speed"]
 
     return speed
+
+def get_connected_fields_for_new_position( x, y, new_direction, game_state):
+    game_state = json.loads(game_state)
+    graph = Graph(game_state["cells"],x,y, game_state["width"], game_state["height"], new_direction, 39)
+    return len(graph.get_connected_components())
 

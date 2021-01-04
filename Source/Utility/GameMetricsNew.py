@@ -1,7 +1,7 @@
 import json
 import random
 import numpy as np
-
+from Source.Utility.Pathfinding.Graph import Graph
 
 class GameMetrics:
     def __init__(self):
@@ -160,3 +160,9 @@ class GameMetrics:
             except IndexError:
                 pass
         return free
+
+    def get_connected_fields_for_new_position(self, x, y, new_direction):
+        graph = Graph(self.game_state["cells"],x,y, self.game_state["width"], self.game_state["height"], new_direction, 69)
+        return len(graph.get_connected_components())
+
+

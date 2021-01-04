@@ -12,7 +12,7 @@ class Graph:
         self.edges = []
         self.start_direction = direction
         self.create_graph(width, height, field_size)
-        self.get_connected_components()
+        #self.get_connected_components()
 
     def create_graph(self, width, height, field_size):
         # create nodes
@@ -35,12 +35,12 @@ class Graph:
 
                 # creates edge to right neighbor
                 if x + 1 < width and x < self.current_position_x + 4:
-                    if node < field_size * field_size - 1  and self.board[y][x] == 0  and self.board[self.nodes[node+1].get_y()][self.nodes[node+1].get_x()] == 0:
+                    if (node+1) % field_size > 0 and self.board[y][x] == 0  and self.board[self.nodes[node+1].get_y()][self.nodes[node+1].get_x()] == 0:
                         self.edges.append(Edge(self.nodes[node], self.nodes[node+1], 1))
 
                 # creates edge to left neighbor
                 if x - 1 >= 0 and x > self.current_position_x - 4:
-                    if node > 0 and self.board[y][x] == 0 and self.board[self.nodes[node - 1].get_y()][self.nodes[node - 1].get_x()] == 0:
+                    if node %field_size > 0 and self.board[y][x] == 0 and self.board[self.nodes[node - 1].get_y()][self.nodes[node - 1].get_x()] == 0:
                         self.edges.append(Edge(self.nodes[node], self.nodes[node - 1], 1))
 
                 # creates edge to upper neighbor

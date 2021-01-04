@@ -1,7 +1,7 @@
 import json
 import random
 import numpy as np
-import Source.Utility.GameMetrics
+import Source.Utility.GameMetrics as GameMetrics
 import Source.Utility.ActionChecker
 
 from Source.InformatiCupGame.PlayerInterface import PlayerInterface
@@ -33,12 +33,21 @@ class HeuristicPlayer(PlayerInterface):
         # define all valid actions
 
         delta_position_change_nothing = self.get_position_delta(translated_direction, current_speed)
+        #get connected components for change nothing
+        change_nothing_connected_components = 0
         delta_position_speed_up = self.get_position_delta(translated_direction, current_speed, 1)
         delta_position_slow_down = self.get_position_delta(translated_direction, current_speed, -1)
         delta_position_turn_left = self.get_position_delta((translated_direction + 1) % 4, current_speed)
+        #get connected components for turn_left
+        turn_left_connected_components =  0
         delta_position_turn_right = self.get_position_delta((translated_direction - 1) % 4, current_speed)
+        #get connected components for turn right
+        turn_right_connected_components = 0
+
+
 
         valid_actions = Source.Utility.ActionChecker.get_valid_actions(current_position, current_speed, delta_position_change_nothing, delta_position_speed_up, delta_position_slow_down, delta_position_turn_left, delta_position_turn_right, self.state)
+
 
         scores = self.get_scores(valid_actions, current_position, current_speed, delta_position_change_nothing, delta_position_speed_up, delta_position_slow_down, delta_position_turn_left, delta_position_turn_right, self.state)
 
@@ -47,7 +56,35 @@ class HeuristicPlayer(PlayerInterface):
             if len(scores) > 0:
                 action = valid_actions[scores.index(max(scores))]
                 #print(action, max(scores))
-        except IndexError:
+                for action in valid_actions:
+                    if action == 'turn_right':
+                        turn_right_connected_components = GameMetrics.get_connected_fields_for_new_position(delta_position_turn_right[0] + current_position[0], delta_position_turn_right[1] + current_position[1], self.translate_direction_inverse((translated_direction - 1) % 4), game_state)
+                    elif action == 'turn_left':
+                        turn_left_connected_components = GameMetrics.get_connected_fields_for_new_position(delta_position_turn_left[0] + current_position[0], delta_position_turn_left[1] + current_position[1], self.translate_direction_inverse((translated_direction + 1) % 4), game_state)
+                    elif action == 'change_nothing':
+                        change_nothing_connected_components = GameMetrics.get_connected_fields_for_new_position(delta_position_change_nothing[0] + current_position[0], delta_position_change_nothing[1] + current_position[1], current_direction, game_state)
+
+                    # ignore Speedup and Slowdown
+                    else:
+                        pass
+
+                connected_components = {"change_nothing": change_nothing_connected_components, "turn_left": turn_left_connected_components, "turn_right": turn_right_connected_components}
+                print("connected components for: ")
+                print("turn right: " + str(turn_right_connected_components))
+                print("turn left: " + str(turn_left_connected_components))
+                print("change nothing: " + str(change_nothing_connected_components))
+
+                # Override action if connected components can be increased dramatically
+                mean_connected_components = np.mean([change_nothing_connected_components, turn_right_connected_components, turn_left_connected_components])
+                if connected_components[action] / float(mean_connected_components) < 0.5:
+                    max_connected_components_action = max(connected_components.values())
+                    for key, value in connected_components.items():
+                        if value == max_connected_components_action and key in valid_actions:
+                            prev_action = action
+                            action = key
+                            print("changed action from " + prev_action + " to " + action)
+
+        except (IndexError, ZeroDivisionError):
             action = " "
 
         self.set_command(action)
@@ -62,6 +99,16 @@ class HeuristicPlayer(PlayerInterface):
             return 2
         else:
             return 3
+
+    def translate_direction_inverse(self, translated_direction):
+        if translated_direction == 0:
+            return "right"
+        elif translated_direction == 1:
+            return "up"
+        elif translated_direction  == 2:
+            return "left"
+        else:
+            return "down"
 
     #returns the change of position when change_nothing is used
     def get_position_delta(self, translated_direction, speed, delta_speed=0):
