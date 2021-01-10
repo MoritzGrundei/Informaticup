@@ -11,8 +11,5 @@ class ReinforcementPlayer(PlayerInterface):
     def set_command(self, new_command):
         self.command = new_command
 
-    def is_gave_command(self):
-        return self.gave_command
-
     def get_id(self):
         return self.id

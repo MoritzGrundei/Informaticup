@@ -111,8 +111,8 @@ def get_own_speed(game_state):
 
     return speed
 
-def get_connected_fields_for_new_position( x, y, new_direction, game_state):
+def get_connected_fields_for_new_position( x, y, new_direction, game_state, field_size):
     game_state = json.loads(game_state)
-    graph = Graph(game_state["cells"],x,y, game_state["width"], game_state["height"], new_direction, 39)
+    graph = Graph(game_state["cells"],x,y, game_state["width"], game_state["height"], new_direction, field_size)
     return len(graph.get_connected_components())
 

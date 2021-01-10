@@ -28,6 +28,7 @@ def get_valid_actions(current_position, current_speed, delta_change_nothing, del
     if check_if_valid(current_position, delta_change_nothing, game_state):
         valid_actions += ["change_nothing"]
 
+    #ignore speed_up and slow_down
     # if current_speed < 10:
         # if check_if_valid(current_position, delta_speed_up, game_state):
             # valid_actions += ["speed_up"]

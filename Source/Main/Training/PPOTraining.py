@@ -39,8 +39,8 @@ class PPOBuffer:
         self.obs_buf[self.ptr] = obs
         self.act_buf[self.ptr] = act
         self.rew_buf[self.ptr] = rew
-        self.val_buf[self.ptr] = val
-        self.logp_buf[self.ptr] = logp
+        self.val_buf[self.ptr] = val[0]
+        self.logp_buf[self.ptr] = logp[0]
         self.ptr += 1
 
     def finish_path(self, last_val=0):
@@ -277,12 +277,16 @@ def ppo(actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
         for t in range(local_steps_per_epoch):
             a, v, logp = ac.step(torch.as_tensor(o, dtype=torch.float32))
 
-            next_o, r, d, _ = env.step(a.item())
+            print("A item 0: ", a.item(0))
+            print("A length: ", len(a))
+            print("A: ", a)
+
+            next_o, r, d, _ = env.step(a.item(0))
             ep_ret += r
             ep_len += 1
 
             # save and log
-            buf.store(o, a.item(), r, v, logp)
+            buf.store(o, a.item(0), r, v, logp)
             logger.store(VVals=v)
 
             # Update obs (critical!)
@@ -340,7 +344,7 @@ if __name__ == '__main__':
     parser.add_argument('--l', type=int, default=2)
     parser.add_argument('--gamma', type=float, default=0.99)
     parser.add_argument('--seed', '-s', type=int, default=0)
-    parser.add_argument('--cpu', type=int, default=4)
+    parser.add_argument('--cpu', type=int, default=8)
     parser.add_argument('--steps', type=int, default=20000)
     parser.add_argument('--epochs', type=int, default=300)
     parser.add_argument('--exp_name', type=str, default='ppo')

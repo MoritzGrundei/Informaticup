@@ -9,7 +9,8 @@ from Source.InformatiCupGame.PlayerInterface import PlayerInterface
 
 class SimplePlayer(PlayerInterface):
 
-    def __init__(self):
+    def __init__(self, field_size):
+        self.field_size = field_size
         self.command = None
 
     def set_command(self, new_command):
@@ -51,11 +52,22 @@ class SimplePlayer(PlayerInterface):
                 #print(action, max(scores))
                 for valid_action in valid_actions:
                     if valid_action == 'turn_right':
-                        turn_right_connected_components = GameMetrics.get_connected_fields_for_new_position(delta_position_turn_right[0] + current_position[0], delta_position_turn_right[1] + current_position[1], self.translate_direction_inverse((translated_direction - 1) % 4), game_state)
+                        turn_right_connected_components = GameMetrics.get_connected_fields_for_new_position(
+                            delta_position_turn_right[0] + current_position[0],
+                            delta_position_turn_right[1] + current_position[1],
+                            self.translate_direction_inverse((translated_direction - 1) % 4), game_state,
+                            self.field_size)
                     elif valid_action == 'turn_left':
-                        turn_left_connected_components = GameMetrics.get_connected_fields_for_new_position(delta_position_turn_left[0] + current_position[0], delta_position_turn_left[1] + current_position[1], self.translate_direction_inverse((translated_direction + 1) % 4), game_state)
+                        turn_left_connected_components = GameMetrics.get_connected_fields_for_new_position(
+                            delta_position_turn_left[0] + current_position[0],
+                            delta_position_turn_left[1] + current_position[1],
+                            self.translate_direction_inverse((translated_direction + 1) % 4), game_state,
+                            self.field_size)
                     elif valid_action == 'change_nothing':
-                        change_nothing_connected_components = GameMetrics.get_connected_fields_for_new_position(delta_position_change_nothing[0] + current_position[0], delta_position_change_nothing[1] + current_position[1], current_direction, game_state)
+                        change_nothing_connected_components = GameMetrics.get_connected_fields_for_new_position(
+                            delta_position_change_nothing[0] + current_position[0],
+                            delta_position_change_nothing[1] + current_position[1], current_direction, game_state,
+                            self.field_size)
 
                     # ignore Speedup and Slowdown
                     else:

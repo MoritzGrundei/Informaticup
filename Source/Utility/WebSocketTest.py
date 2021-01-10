@@ -28,7 +28,7 @@ async def play():
         print("Started Game")
         state = json.loads(state_json)
         own_player = state["players"][str(state["you"])]
-        player = SimplePlayer()
+        player = HeuristicPlayer(own_player, [1,1,1], 69)
         action = player.get_command(state_json)
         action_json = json.dumps({"action": action})
         await websocket.send(action_json)

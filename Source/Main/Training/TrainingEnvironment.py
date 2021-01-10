@@ -28,7 +28,7 @@ class TrainingEnvironment:
         self.game_state = json.loads(self.game.get_game_state(self.player.get_id()))
         self.own_player = self.game_state["players"][str(self.game_state["you"])]
         self.game_observer = GameObservations()
-        self.obs = self.game_state["cells"]
+        self.obs = np.array(self.game_state["cells"])
         self.latest_observations = self.obs
         #for testing
         self.alive = True
@@ -58,8 +58,11 @@ class TrainingEnvironment:
         elif action == 4:
             act = "speed_up"
         self.player.set_command(act)
+        latest_obs = self.game_state
+        old_position = self.game_state["players"][str(self.game_state["you"])]["x"], self.game_state["players"][str(self.game_state["you"])]["y"]
         done = not self.game.tick()
         self.game_state = json.loads(self.game.get_game_state(self.player.get_id()))
+        new_position = self.game_state["players"][str(self.game_state["you"])]["x"], self.game_state["players"][str(self.game_state["you"])]["y"]
         self.own_player = self.game_state["players"][str(self.game_state["you"])]
         self.set_obs()
         if not self.own_player["active"]:
@@ -67,7 +70,7 @@ class TrainingEnvironment:
             self.alive = False
 
         # pass reward into sigmoid function
-        reward = rewards.reward_8(self.obs, self.latest_observations)
+        reward = rewards.reward_9(latest_obs, old_position, self.game_state, new_position)
         self.latest_observations = self.obs
         return self.get_obs(), reward, done, '_'
 
@@ -79,7 +82,7 @@ class TrainingEnvironment:
         return np.array(self.action_space)
 
     def set_obs(self):
-        self.obs = self.game_state["cells"]
+        self.obs = np.array(self.game_state["cells"])
 
     def get_discrete_action_space(self):
         return Discrete(self.action_space.shape[0])

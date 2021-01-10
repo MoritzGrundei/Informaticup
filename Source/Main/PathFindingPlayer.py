@@ -10,21 +10,92 @@ from Source.InformatiCupGame.PlayerInterface import PlayerInterface
 
 class PathFindingPlayer(PlayerInterface):
 
-    def __init__(self, field_size):
+    def __init__(self, field_size, components_size):
         self.graph = None
         self.field_size = field_size
+        self.components_size = components_size
 
     def get_command(self, game_state):
         print("Thinking...")
         game_state = json.loads(game_state)
         x = game_state["players"][str(game_state["you"])]["x"]
         y = game_state["players"][str(game_state["you"])]["y"]
+        self.own_player = self.state["players"][str(self.state["you"])]
         self.graph = Graph(game_state["cells"], x, y, game_state["width"], game_state["height"], game_state["players"][str(game_state["you"])]["direction"], self.field_size)
         destination = self.get_destination(self.graph.get_connected_components(), game_state)
         path = self.graph.get_shortest_path(destination)
         try:
-            return self.get_action_from_path(path, game_state["players"][str(game_state["you"])]["direction"])
-        except IndexError:
+            current_direction = self.own_player["direction"]
+            current_speed = self.own_player["speed"]
+            current_position = (self.own_player["x"], self.own_player["y"])
+
+            translated_direction = self.translate_direction(current_direction)
+            # if turn left: direction = (translated_direction + 1) % 4
+            # if turn right: direction = (translated_direction - 1) % 4
+
+            delta_position_change_nothing = self.get_position_delta(translated_direction, current_speed)
+            # get connected components for change nothing
+            change_nothing_connected_components = 0
+            delta_position_turn_left = self.get_position_delta((translated_direction + 1) % 4, current_speed)
+            # get connected components for turn_left
+            turn_left_connected_components = 0
+            delta_position_turn_right = self.get_position_delta((translated_direction - 1) % 4, current_speed)
+            # get connected components for turn right
+            turn_right_connected_components = 0
+
+            valid_actions = Source.Utility.ActionChecker.get_valid_actions(current_position, current_speed,
+                                                                           delta_position_change_nothing, None, None,
+                                                                           delta_position_turn_left,
+                                                                           delta_position_turn_right, self.state)
+
+
+            action = self.get_action_from_path(path, game_state["players"][str(game_state["you"])]["direction"])
+            if len(valid_actions) > 0:
+                # print(action, max(scores))
+                for valid_action in valid_actions:
+                    if valid_action == 'turn_right':
+                        turn_right_connected_components = GameMetrics.get_connected_fields_for_new_position(
+                            delta_position_turn_right[0] + current_position[0],
+                            delta_position_turn_right[1] + current_position[1],
+                            self.translate_direction_inverse((translated_direction - 1) % 4), game_state,
+                            self.components_size)
+                    elif valid_action == 'turn_left':
+                        turn_left_connected_components = GameMetrics.get_connected_fields_for_new_position(
+                            delta_position_turn_left[0] + current_position[0],
+                            delta_position_turn_left[1] + current_position[1],
+                            self.translate_direction_inverse((translated_direction + 1) % 4), game_state,
+                            self.components_size)
+                    elif valid_action == 'change_nothing':
+                        change_nothing_connected_components = GameMetrics.get_connected_fields_for_new_position(
+                            delta_position_change_nothing[0] + current_position[0],
+                            delta_position_change_nothing[1] + current_position[1], current_direction, game_state,
+                            self.components_size)
+
+                    # ignore Speedup and Slowdown
+                    else:
+                        pass
+
+                connected_components = {"change_nothing": change_nothing_connected_components,
+                                            "turn_left": turn_left_connected_components,
+                                            "turn_right": turn_right_connected_components}
+                print("connected components for: ")
+                print("turn right: " + str(turn_right_connected_components))
+                print("turn left: " + str(turn_left_connected_components))
+                print("change nothing: " + str(change_nothing_connected_components))
+
+                # Override action if connected components can be increased dramatically
+                mean_connected_components = np.mean(
+                    [change_nothing_connected_components, turn_right_connected_components,
+                     turn_left_connected_components])
+                if connected_components[action] / float(mean_connected_components) < 0.9:
+                    max_connected_components_action = max(connected_components.values())
+                    for key, value in connected_components.items():
+                        if value == max_connected_components_action and key in valid_actions:
+                            prev_action = action
+                            action = key
+                            print("changed action from " + prev_action + " to " + action)
+            return action
+        except (IndexError, ZeroDivisionError):
             return "change_nothing"
 
     def get_action_from_path(self, path, direction):

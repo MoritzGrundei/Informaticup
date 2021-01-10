@@ -1,4 +1,5 @@
 import numpy as np
+from Source.Utility.GameMetricsNew import GameMetrics
 
 
 def reward_1(obs, latest_obs):  # reward from Avg Distance, Avg Speed, change Num Living Players, Border Distances
@@ -104,3 +105,13 @@ def reward_8(obs, latest_obs): # free spaces, number of living players, distance
 
 
     return 0.5 * (1 + np.tanh(reward / 2.0))
+
+def reward_9(latest_obs, old_position, obs, new_position):
+    Metrics_old = GameMetrics()
+    Metrics_new = GameMetrics()
+    Metrics_old.set_game_state(latest_obs)
+    Metrics_new.set_game_state(obs)
+    reward = 0
+    if (Metrics_old.get_free_spaces(old_position) < Metrics_new.get_free_spaces(new_position)):
+        reward = reward + 1
+    return reward
