@@ -12,7 +12,6 @@ class Graph:
         self.edges = []
         self.start_direction = direction
         self.create_graph(width, height, field_size)
-        #self.get_connected_components()
 
     def create_graph(self, width, height, field_size):
         # create nodes
@@ -21,7 +20,6 @@ class Graph:
         for i in range(int(bound_low), int(bound_high)):
             for j in range(int(bound_low), int(bound_high)):
                 #idea: include "dead" nodes for now
-                #if x >= 0 and x < width and y >= 0 and y < height:
                 node_x = self.current_position_x + j
                 node_y = self.current_position_y + i
                 self.nodes.append(Node(node_x, node_y))
@@ -102,20 +100,20 @@ class Graph:
 
 
         while len(starting_edges) > 0:
-            for edge in starting_edges:
-                if not edge.get_nodes()[0] in reachable_nodes:
-                    reachable_nodes.append(edge.get_nodes()[0])
-                    for temp_edge in temp_edges:
-                        if edge.get_nodes()[0] in temp_edge.get_nodes() and not temp_edge in starting_edges:
-                            starting_edges.append(temp_edge)
+            edge = starting_edges[0]
+            if not edge.get_nodes()[0] in reachable_nodes:
+                reachable_nodes.append(edge.get_nodes()[0])
+                for temp_edge in temp_edges:
+                    if edge.get_nodes()[0] in temp_edge.get_nodes() and not temp_edge in starting_edges:
+                        starting_edges.append(temp_edge)
 
-                if not edge.get_nodes()[1] in reachable_nodes:
-                    reachable_nodes.append(edge.get_nodes()[1])
-                    for temp_edge in temp_edges:
-                        if edge.get_nodes()[1] in temp_edge.get_nodes() and not temp_edge in starting_edges :
-                            starting_edges.append(temp_edge)
-                starting_edges.remove(edge)
-                temp_edges.remove(edge)
+            if not edge.get_nodes()[1] in reachable_nodes:
+                reachable_nodes.append(edge.get_nodes()[1])
+                for temp_edge in temp_edges:
+                    if edge.get_nodes()[1] in temp_edge.get_nodes() and not temp_edge in starting_edges :
+                        starting_edges.append(temp_edge)
+            starting_edges.remove(edge)
+            temp_edges.remove(edge)
         return reachable_nodes
 
     # implementation of Dijkstra
