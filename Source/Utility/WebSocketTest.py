@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
 from Source.Main.HeuristicPlayer import HeuristicPlayer
+from Source.Main.SimplePlayer import SimplePlayer
 
 def plot_field(board):
     bounds = [0, 1, 2, 3, 4, 5, 6]
@@ -27,7 +28,7 @@ async def play():
         print("Started Game")
         state = json.loads(state_json)
         own_player = state["players"][str(state["you"])]
-        player = HeuristicPlayer(own_player, [1, 1, 1])
+        player = SimplePlayer()
         action = player.get_command(state_json)
         action_json = json.dumps({"action": action})
         await websocket.send(action_json)

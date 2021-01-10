@@ -71,7 +71,7 @@ class SimplePlayer(PlayerInterface):
 
                 # Override action if connected components can be increased dramatically
                 mean_connected_components = np.mean([change_nothing_connected_components, turn_right_connected_components, turn_left_connected_components])
-                if connected_components[action] / float(mean_connected_components) < 1:
+                if connected_components[action] / float(mean_connected_components) < 0.5:
                     max_connected_components_action = max(connected_components.values())
                     for key, value in connected_components.items():
                         if value == max_connected_components_action and key in valid_actions:
