@@ -17,10 +17,11 @@ class PathFindingPlayer(PlayerInterface):
 
     def get_command(self, game_state):
         print("Thinking...")
+        game_state_no_json = game_state
         game_state = json.loads(game_state)
         x = game_state["players"][str(game_state["you"])]["x"]
         y = game_state["players"][str(game_state["you"])]["y"]
-        self.own_player = self.state["players"][str(self.state["you"])]
+        self.own_player = game_state["players"][str(game_state["you"])]
         self.graph = Graph(game_state["cells"], x, y, game_state["width"], game_state["height"], game_state["players"][str(game_state["you"])]["direction"], self.field_size)
         destination = self.get_destination(self.graph.get_connected_components(), game_state)
         path = self.graph.get_shortest_path(destination)
@@ -46,7 +47,7 @@ class PathFindingPlayer(PlayerInterface):
             valid_actions = Source.Utility.ActionChecker.get_valid_actions(current_position, current_speed,
                                                                            delta_position_change_nothing, None, None,
                                                                            delta_position_turn_left,
-                                                                           delta_position_turn_right, self.state)
+                                                                           delta_position_turn_right, game_state)
 
 
             action = self.get_action_from_path(path, game_state["players"][str(game_state["you"])]["direction"])
@@ -57,18 +58,18 @@ class PathFindingPlayer(PlayerInterface):
                         turn_right_connected_components = GameMetrics.get_connected_fields_for_new_position(
                             delta_position_turn_right[0] + current_position[0],
                             delta_position_turn_right[1] + current_position[1],
-                            self.translate_direction_inverse((translated_direction - 1) % 4), game_state,
+                            self.translate_direction_inverse((translated_direction - 1) % 4), game_state_no_json,
                             self.components_size)
                     elif valid_action == 'turn_left':
                         turn_left_connected_components = GameMetrics.get_connected_fields_for_new_position(
                             delta_position_turn_left[0] + current_position[0],
                             delta_position_turn_left[1] + current_position[1],
-                            self.translate_direction_inverse((translated_direction + 1) % 4), game_state,
+                            self.translate_direction_inverse((translated_direction + 1) % 4), game_state_no_json,
                             self.components_size)
                     elif valid_action == 'change_nothing':
                         change_nothing_connected_components = GameMetrics.get_connected_fields_for_new_position(
                             delta_position_change_nothing[0] + current_position[0],
-                            delta_position_change_nothing[1] + current_position[1], current_direction, game_state,
+                            delta_position_change_nothing[1] + current_position[1], current_direction, game_state_no_json,
                             self.components_size)
 
                     # ignore Speedup and Slowdown
@@ -207,3 +208,22 @@ class PathFindingPlayer(PlayerInterface):
 
     def get_avg_speed(self, state):
         return Source.Utility.GameMetrics.get_avg_speed(state)
+
+    #returns the change of position when change_nothing is used
+    def get_position_delta(self, translated_direction, speed, delta_speed=0):
+        x_delta = y_delta = 0
+        if translated_direction == 0 or translated_direction == 2:
+            x_delta = (1 - translated_direction) * (speed + delta_speed)
+        else:
+            y_delta = (translated_direction - 2) * (speed + delta_speed)
+        return (x_delta, y_delta)
+
+    def translate_direction_inverse(self, translated_direction):
+        if translated_direction == 0:
+            return "right"
+        elif translated_direction == 1:
+            return "up"
+        elif translated_direction  == 2:
+            return "left"
+        else:
+            return "down"

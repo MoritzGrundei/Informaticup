@@ -25,7 +25,10 @@ class Graph:
                 self.nodes.append(Node(node_x, node_y))
 
         # create edges
-        self.board[self.current_position_y][self.current_position_x] = 0
+        try:
+            self.board[self.current_position_y][self.current_position_x] = 0
+        except:
+            pass
         for node in range(0,len(self.nodes),2):
             x = self.nodes[node].get_x()
             y = self.nodes[node].get_y()
@@ -43,7 +46,7 @@ class Graph:
 
                 # creates edge to upper neighbor
                 if node >= field_size and y > 1 and y > self.current_position_y - 4:
-                    if self.board[y][x] == 0 and self.board[self.nodes[node - field_size].get_y()][self.nodes[node - field_size].get_x()] == 0:
+                     if self.board[y][x] == 0 and self.board[self.nodes[node - field_size].get_y()][self.nodes[node - field_size].get_x()] == 0:
                         self.edges.append(Edge(self.nodes[node], self.nodes[node - field_size], 1))
 
                 # creates edge to bottom neighbor
@@ -74,6 +77,7 @@ class Graph:
             elif self.start_direction == "left" and starting_node.get_x() - other_node.get_x() < 0:
                 self.edges.remove(edge)
                 break
+
 
     def __str__(self):
         nodes = ""
