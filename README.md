@@ -9,11 +9,11 @@ docker build -t informaticup-solution .
 If you rather like to use a pre-built docker image, you can also [pull it from GitHub](https://github.com/MoritzGrundei/Informaticup/packages/577035):
 
 ```
-docker pull docker.pkg.github.com/moritzgrundei/informaticup/informaticup:0.0.1
+docker pull docker.pkg.github.com/moritzgrundei/informaticup/informaticup:1.0.0
 ```
 
 ## Run
 
 ```
-docker run -e URL="wss://msoll.de/spe_ed" -e KEY="<Your API key>" -e TIME_URL "https://msoll.de/spe_ed_time" icup2021_example
+docker run -e URL="wss://msoll.de/spe_ed" -e KEY="<Your API key>" -e TIME_URL "https://msoll.de/spe_ed_time" informaticup:1.0.0
 ```
