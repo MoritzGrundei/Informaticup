@@ -70,11 +70,6 @@ class HeuristicPlayer(PlayerInterface):
                         pass
 
                 connected_components = {"change_nothing": change_nothing_connected_components, "turn_left": turn_left_connected_components, "turn_right": turn_right_connected_components}
-                print("connected components for: ")
-                print("turn right: " + str(turn_right_connected_components))
-                print("turn left: " + str(turn_left_connected_components))
-                print("change nothing: " + str(change_nothing_connected_components))
-
                 # Override action if connected components can be increased dramatically
                 mean_connected_components = np.mean([change_nothing_connected_components, turn_right_connected_components, turn_left_connected_components])
                 if connected_components[action] / float(mean_connected_components) < 1:
@@ -134,7 +129,7 @@ class HeuristicPlayer(PlayerInterface):
         return Source.Utility.GameMetrics.get_avg_speed(state)
 
     def get_score(self, new_position):
-        return  self.weights[0] * self.get_avg_speed(self.state) +  self.weights[1] * self.get_average_distance(self.get_distance_to_players(self.state)) + self.weights[2] * self.get_free_spaces(new_position, self.state)
+        return self.weights[1] * self.get_average_distance(self.get_distance_to_players(self.state)) + self.weights[2] * self.get_free_spaces(new_position, self.state) + self.weights[0] * min(GameMetrics.get_distances_to_borders(self.state, self.state["you"]-1))/float(max(GameMetrics.get_distances_to_borders(self.state, self.state["you"]-1)))
 
     def get_scores(self, valid_actions, current_position, current_speed, delta_position_change_nothing, delta_position_speed_up, delta_position_slow_down, delta_position_turn_left, delta_position_turn_right, game_state):
         scores = []

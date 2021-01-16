@@ -79,10 +79,6 @@ class PathFindingPlayer(PlayerInterface):
                 connected_components = {"change_nothing": change_nothing_connected_components,
                                             "turn_left": turn_left_connected_components,
                                             "turn_right": turn_right_connected_components}
-                print("connected components for: ")
-                print("turn right: " + str(turn_right_connected_components))
-                print("turn left: " + str(turn_left_connected_components))
-                print("change nothing: " + str(change_nothing_connected_components))
 
                 # Override action if connected components can be increased dramatically
                 mean_connected_components = np.mean(
@@ -179,11 +175,10 @@ class PathFindingPlayer(PlayerInterface):
             if (x >= 0 and x < width and y >= 0 and y < height) and not (x == current_x and y == current_y):
                 game_state["players"][str(game_state["you"])]["x"] = x
                 game_state["players"][str(game_state["you"])]["y"] = y
-                if self.get_free_spaces([x,y], game_state) > max_value:
-                        #GameMetrics.get_average_distance(GameMetrics.get_distance_to_players(game_state)) + 0 * min(GameMetrics.get_distances_to_borders(game_state, game_state["you"] - 1)) > max_value:
+                position_value = GameMetrics.get_average_distance(GameMetrics.get_distance_to_players(game_state)) +  min(GameMetrics.get_distances_to_borders(game_state, game_state["you"]-1)) + self.get_free_spaces([x,y], game_state)
+                if position_value > max_value:
                     max_position = node
-                    max_value = self.get_free_spaces([x,y], game_state)
-                        # GameMetrics.get_average_distance(GameMetrics.get_distance_to_players(game_state)) + 0 * min(GameMetrics.get_distances_to_borders(game_state, game_state["you"]-1))
+                    max_value = position_value
         return max_position
 
     def translate_direction(self, direction):

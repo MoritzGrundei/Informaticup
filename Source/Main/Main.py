@@ -11,7 +11,7 @@ start = time.time()
 
 winners = [0, 0, 0, 0, 0, 0, 0]
 round_counter = 0
-game_count = 500
+game_count = 5
 try:
     for i in range(game_count):
         game_wrapper = GameWrapper(70, 70, [HeuristicPlayer(1, [1, 1, 1],49), HeuristicPlayer(2, [1, 1, 1], 59), SimplePlayer(49), SimplePlayer(59), PathFindingPlayer(9, 49), PathFindingPlayer(9, 59)])

@@ -76,10 +76,6 @@ class SimplePlayer(PlayerInterface):
                     action = valid_action
 
                 connected_components = {"change_nothing": change_nothing_connected_components, "turn_left": turn_left_connected_components, "turn_right": turn_right_connected_components}
-                print("connected components for: ")
-                print("turn right: " + str(turn_right_connected_components))
-                print("turn left: " + str(turn_left_connected_components))
-                print("change nothing: " + str(change_nothing_connected_components))
 
                 # Override action if connected components can be increased dramatically
                 mean_connected_components = np.mean([change_nothing_connected_components, turn_right_connected_components, turn_left_connected_components])
