@@ -18,8 +18,8 @@ def plot_field(board):
     plt.show()
 
 async def play():
-    url = 'wss://msoll.de/spe_ed'
-    key = 'ZC4R7UH2QKVRQ3VVEQ6WIA4VBHFRVPM4CGEBW7XFYAR6NQZGJVFEFQBT'
+    url = os.environ["URL"]
+    key = os.environ["KEY"]
 
 
     async with websockets.connect(f"{url}?key={key}") as websocket:
