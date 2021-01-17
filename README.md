@@ -15,5 +15,5 @@ docker pull docker.pkg.github.com/moritzgrundei/informaticup/informaticup:1.0.0
 ## Run
 
 ```
-docker run -e URL="wss://msoll.de/spe_ed" -e KEY="<Your API key>" -e TIME_URL "https://msoll.de/spe_ed_time" informaticup:1.0.0
+docker run -e URL="wss://msoll.de/spe_ed" -e KEY="<Your API key>" -e TIME_URL "https://msoll.de/spe_ed_time" docker.pkg.github.com/moritzgrundei/informaticup/informaticup:1.0.0
 ```
